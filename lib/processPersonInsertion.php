@@ -16,17 +16,17 @@ $personProvince = $_POST['personProvince'];
 $personPostalCode= $_POST['personPostalCode'];
 
 
-echo "SSN: " . $personSSN . "\n";
-echo "medicare: ". $personMedicare . "\n";
-echo "FNAME: " . $personFname . "\n";
-echo "LNAME: " . $personLname . "\n";
-echo "DOB: " . $personDOB . "\n";
+// echo "SSN: " . $personSSN . "\n";
+// echo "medicare: ". $personMedicare . "\n";
+// echo "FNAME: " . $personFname . "\n";
+// echo "LNAME: " . $personLname . "\n";
+// echo "DOB: " . $personDOB . "\n";
 
-echo "EMAIL: " . $personEmail . "\n";
-echo "PHONE: " . $personPhoneNumber . "\n";
-echo "CITIZENSHIP: " . $personCitizenship . "\n";
-echo "ADDRESS: " . $personAddress . "\n";
-echo "POSTAL CODE: ". $personPostalCode . "\n";
+// echo "EMAIL: " . $personEmail . "\n";
+// echo "PHONE: " . $personPhoneNumber . "\n";
+// echo "CITIZENSHIP: " . $personCitizenship . "\n";
+// echo "ADDRESS: " . $personAddress . "\n";
+// echo "POSTAL CODE: ". $personPostalCode . "\n";
 
 
 $query1 ="REPLACE INTO Postal_Code (postal_code, city, province)  VALUES ('$personPostalCode', '$personCity', '$personProvince');";
