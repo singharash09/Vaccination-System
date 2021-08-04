@@ -15,8 +15,6 @@ include_once '../config/db.php';
                 <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-users"></i> People</h1></div>
                 <div class="col-sm-3" style="text-align: right;">
                     <a href="modify/insertPerson.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add</a>
-                    <a type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i> Remove</a>
-                    <a type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i> Edit</a>
                 </div>
             </div>
             <div class="row">
@@ -25,18 +23,20 @@ include_once '../config/db.php';
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">SSN</th>
-                    <th scope="col">Medicare</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Date of Birth</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Phone</th>
-                    <th scope="col">Citizenship</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">City</th>
-                    <th scope="col">Province</th>
-                    <th scope="col">Postal Code</th>
+                    <th scope="col-md">SSN</th>
+                    <th scope="col-md">Medicare</th>
+                    <th scope="col-md">First Name</th>
+                    <th scope="col-md">Last Name</th>
+                    <th scope="col-md">DOB</th>
+                    <th scope="col-md">Email</th>
+                    <th scope="col-md">Phone</th>
+                    <th scope="col-md">Citizenship</th>
+                    <th scope="col-md">Address</th>
+                    <th scope="col-md">City</th>
+                    <th scope="col-md">Province</th>
+                    <th scope="col-md">Postal Code</th>
+                    <th scope="col-sm"></th>
+                    <th scope="col-sm"></th>                    
                 </tr>
             </thead>
             <tbody>
@@ -58,7 +58,10 @@ include_once '../config/db.php';
                         <td>'.$row['address'].'</td>
                         <td>'.$row['city'].'</td>
                         <td>'.$row['province'].'</td>
-                        <td>'.$row['postal_code'].'</td></tr>';
+                        <td>'.$row['postal_code'].'</td>
+                        <td><a href="../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
+                        <td><a href="modify/editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        </tr>';
                     }
                 }
                 ?>

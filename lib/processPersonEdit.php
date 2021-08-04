@@ -13,7 +13,6 @@ $personCitizenship = $_POST['personCitizenship'];
 $personAddress = $_POST['personAddress'];
 $personPostalCode= $_POST['personPostalCode'];
 
-
 echo "SSN: " . $personSSN . "\n";
 echo "medicare: ". $personMedicare . "\n";
 echo "FNAME: " . $personFname . "\n";
@@ -26,13 +25,17 @@ echo "CITIZENSHIP: " . $personCitizenship . "\n";
 echo "ADDRESS: " . $personAddress . "\n";
 echo "POSTAL CODE: ". $personPostalCode . "\n";
 
+$query = "UPDATE Person 
+SET medicare='$personMedicare', first_name='$personFname', last_name='$personLname', date_of_birth='$personDOB', email_address='$personEmail', telephone_number='$personPhoneNumber', citizenship='$personCitizenship', address='$personAddress', postal_code='$personPostalCode'
+WHERE SSN='$personSSN';";
+
+if(!mysqli_query($conn, $query)){
+    echo mysqli_error($conn);
+}else{
+    echo "good";
+}
 
 
-
-$query = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
-VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
-mysqli_query($conn, $query);
-
-header("Location: ../public/people.php?insertion=success")
+header("Location: ../public/people.php?edit=success");
 
 ?>

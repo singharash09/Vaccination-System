@@ -56,7 +56,7 @@ include_once '../../config/db.php';
                          <div class="col-sm-2">
                               <label for="personPostalCode" class="form-label">Postal Code</label>
                               <select class="form-select form-select" id="personPostalCode" name="personPostalCode" aria-label=".form-select-lg example" required>
-                                  <option selected>Please Select</option>
+                                  <option value="">Please Select</option>
                                   <?php 
                                     $query = "SELECT postal_code FROM Postal_Code;";
                                     $result = mysqli_query($conn, $query);
