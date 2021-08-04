@@ -13,6 +13,7 @@
     <body>
     <div class="menu">
     <div class="row text-center logo-space">
+        <!--Must change this url when pushing to concordia servers-->
         <div class="span4"><img class="center-block" height="100" width="100" src="/COMP353/public/assets/logo.png" /></div>
         <h2>Vaccination Management System</h2>
     </div>
@@ -24,6 +25,7 @@
         <div class="collapse navbar-collapse" >
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
+                    <!--Must change this url when pushing to concordia servers-->
                     <a class="nav-link active" aria-current="page" href="/COMP353/public/people.php"><i class="fas fa-users"></i>  People</a>
                 </li>
                 <li class="nav-item">
