@@ -41,13 +41,14 @@ include_once '../../config/db.php';
                                $editPersonPhone = $row['telephone_number'];
                                $editPersonCitizenship = $row['citizenship'];
                                $editPersonAddress = $row['address'];
+                               $editPersonCity = $row['city'];
+                               $editPersonProvince = $row['province'];
                                $editPersonPostalCode = $row['postal_code'];
 
                            }
                        }
                        ?>
                          <div class="col-sm-6">
-                              <label for="personSSN" class="form-label">SSN or Passport ID</label>
                               <input type="hidden" value="<?php echo $personToEdit ?>" class="form-control" id="personSSN" name="personSSN" minlength="9" maxlength="9" placeholder="123456789 " required>
                           </div>
 
@@ -80,28 +81,22 @@ include_once '../../config/db.php';
                               <label for="personCitizenship" class="form-label">Citizenship</label>
                               <input type="text" value="<?php echo  $editPersonCitizenship?>" class="form-control" id="personCitizenship" name="personCitizenship" placeholder="Canada" maxlength="30" required>
                           </div>
-                          <div class="col-sm-10">
+                          <div class="col-sm-6">
                               <label for="personAddress" class="form-label">Address</label>
                               <input type="text" value="<?php echo  $editPersonAddress?>" class="form-control" id="personAddress"  name="personAddress" placeholder="e.g: 123 Super Street" maxlength="255" required>
                           </div> 
-                          
-                         <div class="col-sm-2">
-                              <label for="personPostalCode" class="form-label">Postal Code</label>
-                              <select class="form-select form-select" id="personPostalCode" name="personPostalCode" aria-label=".form-select-lg example" required>
-                                  <option value="">Please Select</option>
-                                  <?php 
-                                    $query = "SELECT postal_code FROM Postal_Code;";
-                                    $result = mysqli_query($conn, $query);
-                                    $resultCheck = mysqli_num_rows($result);
-                                    
-                                    if($resultCheck>0){
-                                        while($row = mysqli_fetch_assoc($result)){
-                                            echo '<option value="'.$row['postal_code'].'">'.$row['postal_code'].'</option>';
-                                        }
-                                    }                                    
-                                  ?>
-                                </select>
+                          <div class="col-sm-2">
+                              <label for="personCity" class="form-label">City</label>
+                              <input type="text" value="<?php echo  $editPersonCity?>" class="form-control" id="personCity"  name="personCity" placeholder="Montreal" maxlength="30" required>
                           </div>
+                          <div class="col-sm-2">
+                              <label for="personPostalCode" class="form-label">Postal Code</label>
+                              <input type="text" value="<?php echo  $editPersonPostalCode?>" class="form-control" id="personPostalCode"  name="personPostalCode" placeholder="M4S2T1" minlength="6" maxlength="6" required>                            
+                          </div>                          
+                          <div class="col-sm-2">
+                              <label for="personProvince" class="form-label">Province</label>
+                              <input type="text" value="<?php echo  $editPersonProvince?>" class="form-control" id="personProvince"  name="personProvince" placeholder="QC" maxlength="2" required>
+                          </div>   
                           <div>
                              <button class="btn btn-secondary" type="submit">Update</button>
                           </div>

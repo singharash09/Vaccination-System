@@ -11,6 +11,8 @@ $personEmail = $_POST['personEmail'];
 $personPhoneNumber = $_POST['personPhoneNumber'];
 $personCitizenship = $_POST['personCitizenship'];
 $personAddress = $_POST['personAddress'];
+$personCity = $_POST['personCity'];
+$personProvince = $_POST['personProvince'];
 $personPostalCode= $_POST['personPostalCode'];
 
 
@@ -27,11 +29,14 @@ echo "ADDRESS: " . $personAddress . "\n";
 echo "POSTAL CODE: ". $personPostalCode . "\n";
 
 
+$query1 ="REPLACE INTO Postal_Code (postal_code, city, province)  VALUES ('$personPostalCode', '$personCity', '$personProvince');";
 
 
-$query = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
+$query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
 VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
-mysqli_query($conn, $query);
+
+mysqli_query($conn, $query1);
+mysqli_query($conn, $query2);
 
 header("Location: ../public/people.php?insertion=success")
 

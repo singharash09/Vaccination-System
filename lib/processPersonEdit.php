@@ -11,7 +11,10 @@ $personEmail = $_POST['personEmail'];
 $personPhoneNumber = $_POST['personPhoneNumber'];
 $personCitizenship = $_POST['personCitizenship'];
 $personAddress = $_POST['personAddress'];
+$personCity = $_POST['personCity'];
+$personProvince = $_POST['personProvince'];
 $personPostalCode= $_POST['personPostalCode'];
+
 
 echo "SSN: " . $personSSN . "\n";
 echo "medicare: ". $personMedicare . "\n";
@@ -25,16 +28,17 @@ echo "CITIZENSHIP: " . $personCitizenship . "\n";
 echo "ADDRESS: " . $personAddress . "\n";
 echo "POSTAL CODE: ". $personPostalCode . "\n";
 
-$query = "UPDATE Person 
+
+
+$query1 = "REPLACE INTO Postal_Code (postal_code, city, province)  VALUES ('$personPostalCode', '$personCity', '$personProvince');";
+
+$query2 = "UPDATE Person 
 SET medicare='$personMedicare', first_name='$personFname', last_name='$personLname', date_of_birth='$personDOB', email_address='$personEmail', telephone_number='$personPhoneNumber', citizenship='$personCitizenship', address='$personAddress', postal_code='$personPostalCode'
 WHERE SSN='$personSSN';";
 
-if(!mysqli_query($conn, $query)){
-    echo mysqli_error($conn);
-}else{
-    echo "good";
-}
 
+mysqli_query($conn, $query1);
+mysqli_query($conn, $query2);
 
 header("Location: ../public/people.php?edit=success");
 
