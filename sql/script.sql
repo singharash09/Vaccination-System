@@ -296,6 +296,8 @@ INSERT INTO Person VALUES('303395586','123456789', 'Roy', 'Wetmore', '1976-12-27
 INSERT INTO Person VALUES('575003660','123456788','Mary', 'Dillard', '1941-4-14', 'mary.dillard@hotmail.com', '4184386204', 'Canadian', '3105 ccool st.',  'G0A3J0');
 INSERT INTO Vaccination_Facility VALUES ('University Of Toronto', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
 INSERT INTO Vaccination_Facility VALUES ('Olympic Stadium', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 INSERT INTO Vaccine_Type VALUES ('Pfizer', 'SAFE', '2020-12-09', NULL);
 INSERT INTO Vaccine_Type VALUES ('Moderna', 'SAFE', '2020-12-14', NULL);
 INSERT INTO Vaccine_Type VALUES('Astrazeneca','SUSPENDED','2020-11-15','2021-02-26');
