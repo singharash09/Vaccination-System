@@ -1,28 +1,26 @@
 <?php
 include_once '../config/db.php';
 
-$FacilityName = $_POST['FacilityName'];
-$FacilityType = $_POST['FacilityType'];
-$FacilityWebAdress = $_POST['FacilityWebAdress'];
+$facilityName = $_POST['facilityName'];
+$facilityType = $_POST['facilityType'];
+$facilityWebAdress = $_POST['facilityWebAdress'];
 
 
-$FacilityPhoneNumber = $_POST['FacilityPhoneNumber'];
-$FacilityAddress = $_POST['FacilityAddress'];
-$FacilityPostalCode= $_POST['FacilityPostalCode'];
+$facilityPhoneNumber = $_POST['facilityPhoneNumber'];
+$facilityAddress = $_POST['facilityAddress'];
+$facilityPostalCode= $_POST['facilityPostalCode'];
 
-echo "Name: " . $FacilityName . "\n";
-echo "Type: ". $FacilityType. "\n";
-echo "Web Adress: " . $FacilityWebAdress . "\n";
+echo "Name: " . $facilityName . "\n";
+echo "Type: ". $facilityType. "\n";
+echo "Web Adress: " . $facilityWebAdress . "\n";
 
-
-
-echo "PHONE: " . $FacilityPhoneNumber. "\n";
-echo "ADDRESS: " . $FacilityAddress. "\n";
-echo "POSTAL CODE: ". $FacilityPostalCode . "\n";
+echo "PHONE: " . $facilityPhoneNumber. "\n";
+echo "ADDRESS: " . $facilityAddress. "\n";
+echo "POSTAL CODE: ". $facilityPostalCode . "\n";
 
 $query = "UPDATE Vaccination_facility
-SET facility_type='$FacilityType', web_address='$FacilityWebAdress', phone_number='$FacilityPhoneNumber',  address='$FacilityAddress', postal_code='$FacilityPostalCode'
-WHERE facility_name='$FacilityName';";
+SET facility_type='$facilityType', web_address='$facilityWebAdress', phone_number='$facilityPhoneNumber',  address='$facilityAddress', postal_code='$facilityPostalCode'
+WHERE facility_name='$facilityName';";
 
 if(!mysqli_query($conn, $query)){
     echo mysqli_error($conn);
@@ -31,6 +29,6 @@ if(!mysqli_query($conn, $query)){
 }
 
 
-header("Location: ../public/Facility.php?edit=success");
+header("Location: ../public/facility/facility.php?edit=success");
 
 ?>

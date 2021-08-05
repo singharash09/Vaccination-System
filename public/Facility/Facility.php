@@ -1,6 +1,6 @@
 <?php
-include_once 'templates/header.php';
-include_once '../config/db.php';
+include_once '../templates/header.php';
+include_once '../../config/db.php';
 ?>
 
 <html>
@@ -48,8 +48,8 @@ include_once '../config/db.php';
                         <td>'.$row['address'].'</td>
                         <td>'.$row['phone_number'].'</td>
                         <td>'.$row['postal_code'].'</td>
-                        <td><a href="../lib/processFacilityDeletion.php?FacilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
-                        <td><a href="editFacility.php?FacilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="../../lib/processFacilityDeletion.php?facilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
+                        <td><a href="editFacility.php?facilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
                         </tr>';
                     }
                 }
