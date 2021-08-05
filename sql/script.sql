@@ -208,23 +208,26 @@ DELIMITER ;
 
 DROP TRIGGER shipment_update;
 
- -- QUERY 10
+ -- QUERY 10 
+ 
 DELIMITER //
 CREATE TRIGGER transfer_update
 BEFORE INSERT ON Transfers FOR EACH ROW
-BEGIN 
+	BEGIN 
 
-    UPDATE Inventory
-    SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines
-    WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
-    
-	UPDATE Inventory
-    SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
-    WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
-    
-END//
+		IF ((SELECT Inventory.number_of_vaccines FROM Inventory WHERE (Inventory.facility_name = New.transfer_out) AND (Inventory.type_name = New.vaccine_type)) >= New.number_of_vaccines) THEN
+			UPDATE Inventory
+			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines 
+			WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
+			
+			UPDATE Inventory
+			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
+			WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
+		END IF;
+		
+	END//
+
 DELIMITER ;
-
 DROP TRIGGER transfer_update;    
 
     -- QUERY 11 
