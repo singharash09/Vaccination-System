@@ -12,9 +12,11 @@ include_once '../../config/db.php';
     <body>
         <div class="container">
             <div class="row top-buffer">
-                <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-hospital-alt"></i> Facilities</h1></div>
-                <div class="col-sm-3" style="text-align: right;">
-                    <a href="insertFacility.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add</a>
+                <div class="col-sm-6"><h1 class="page-title"> <i class="fas fa-hospital-alt"></i> Facilities</h1></div>
+                <div class="col-sm-6" style="text-align: right;">
+                    <a href="insertFacility.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add facility</a>
+                    <a href="receiveShipment.php" type="button" class="btn btn-outline-primary button-style"><i class="fas fa-truck"></i> Receive Shipment</a>                       
+                     <a href="performTransfer.php" type="button" class="btn btn-outline-primary button-style"><i class="fas fa-random"></i> Perform Transfer</a>                              
                 </div>
             </div>
             <div class="row">
@@ -30,7 +32,8 @@ include_once '../../config/db.php';
                     <th scope="col-md">address</th>
                     <th scope="col-md">Postal Code</th>
                     <th scope="col-sm"></th>
-                    <th scope="col-sm"></th>                    
+                    <th scope="col-sm"></th>           
+                    <th scope="col-sm"></th>                                 
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +52,7 @@ include_once '../../config/db.php';
                         <td>'.$row['postal_code'].'</td>
                         <td><a href="../../lib/processFacilityDeletion.php?facilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
                         <td><a href="editFacility.php?facilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="viewInventory.php?facilityInventoryName='.$row['facility_name'].'" type="button" class="btn btn-outline-primary button-style"><i class="fas fa-box-open"></i></a></td>
                         </tr>';
                     }
                 }

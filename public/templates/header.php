@@ -6,8 +6,10 @@
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
         <link rel="stylesheet" href="/COMP353/public/css/styles.css">
         <!--Scripts-->
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <script src="/COMP353/public/js/script.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
 
     <body>
@@ -21,8 +23,6 @@
 
     <div>
         <nav class="navbar navbar-expand-md py-3" style="background-color: #cc0000;">
-
-        <div class="collapse navbar-collapse" >
             <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <!--Must change this url when pushing to concordia servers-->
@@ -40,7 +40,6 @@
                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#"><i class="fas fa-user-nurse"></i>  Employees</a>
                 </li>
-        </div>
         </nav>
 
          </div>
