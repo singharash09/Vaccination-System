@@ -22,7 +22,7 @@ include_once '../../config/db.php';
                           </div>
                           <div class="col-sm-6">
                               <label for="facilityType" class="form-label">Facility Type</label>
-                              <input type="text" class="form-control" id="facilityType" name="facilityType"  placeholder="ABCD12345"       required>
+                              <input type="text" class="form-control" id="facilityType" name="facilityType"  placeholder="ABCD12345"     required>
                           </div>
                           <div class="col-sm-3">
                               <label for="facilityWebAdress" class="form-label">Web address</label>
