@@ -38,6 +38,6 @@ VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$person
 mysqli_query($conn, $query1);
 mysqli_query($conn, $query2);
 
-header("Location: ../public/people.php?insertion=success")
+header("Location: ../public/people/people.php?insertion=success")
 
 ?>

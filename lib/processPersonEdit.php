@@ -40,6 +40,6 @@ WHERE SSN='$personSSN';";
 mysqli_query($conn, $query1);
 mysqli_query($conn, $query2);
 
-header("Location: ../public/people.php?edit=success");
+header("Location: ../public/people/people.php?edit=success");
 
 ?>

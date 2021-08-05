@@ -1,11 +1,10 @@
 <?php
-include_once 'templates/header.php';
-include_once '../config/db.php';
+include_once '../templates/header.php';
+include_once '../../config/db.php';
 ?>
-
 <html>
     <head>
-        <link rel="stylesheet" href="/public/css/styles.css">
+        <link rel="stylesheet" href="../css/styles.css">
         <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     </head>
 
@@ -14,7 +13,7 @@ include_once '../config/db.php';
             <div class="row top-buffer">
                 <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-users"></i> People</h1></div>
                 <div class="col-sm-3" style="text-align: right;">
-                    <a href="modify/insertPerson.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add</a>
+                    <a href="insertPerson.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add</a>
                 </div>
             </div>
             <div class="row">
@@ -59,8 +58,8 @@ include_once '../config/db.php';
                         <td>'.$row['city'].'</td>
                         <td>'.$row['province'].'</td>
                         <td>'.$row['postal_code'].'</td>
-                        <td><a href="../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
-                        <td><a href="modify/editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="../../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
+                        <td><a href="editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
                         </tr>';
                     }
                 }

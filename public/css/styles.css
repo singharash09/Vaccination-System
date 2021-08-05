@@ -33,3 +33,10 @@
         text-align: center; 
         margin-top: 50px;
 }
+
+.center-element {
+  margin: auto;
+  width: 50%;
+  padding-left: 5vw;
+    padding-right: 5vw;
+}

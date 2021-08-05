@@ -8,7 +8,7 @@ if(isset($_GET['personToDelete'])){
     mysqli_query($conn, $query);
 
     
-    header("Location: ../public/people.php?deletion=success");
+    header("Location: ../public/people/people.php?deletion=success");
 }
 
 
