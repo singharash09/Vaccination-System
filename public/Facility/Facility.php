@@ -12,7 +12,7 @@ include_once '../../config/db.php';
     <body>
         <div class="container">
             <div class="row top-buffer">
-                <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-users"></i> Facilities</h1></div>
+                <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-hospital-alt"></i> Facilities</h1></div>
                 <div class="col-sm-3" style="text-align: right;">
                     <a href="insertFacility.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add</a>
                 </div>
@@ -46,10 +46,9 @@ include_once '../../config/db.php';
                         <td>'.$row['web_address'].'</td>
                         <td>'.$row['phone_number'].'</td>
                         <td>'.$row['address'].'</td>
-                        <td>'.$row['phone_number'].'</td>
                         <td>'.$row['postal_code'].'</td>
-                        <td><a href="../../lib/processFacilityDeletion.php?facilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
-                        <td><a href="editFacility.php?facilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="../../lib/processFacilityDeletion.php?facilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
+                        <td><a href="editFacility.php?facilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-edit"></i></a></td>
                         </tr>';
                     }
                 }
