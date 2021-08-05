@@ -69,7 +69,7 @@ CREATE TABLE Current_Eligible_Group(
 CREATE TABLE Vaccine_Type (
     type_name VARCHAR(30) NOT NULL,
     status ENUM('SAFE', 'SUSPENDED'),
-    date_of_approval DATE NOT NULL,
+    date_of_approval DATE ,
     date_of_suspension DATE,
 
     PRIMARY KEY (type_name)
@@ -180,15 +180,15 @@ DROP TABLE Shipment;
 DROP TABLE Inventory;
 DROP TABLE Vaccination;
 DROP TABLE Manages;
-DROP TABLE Works_at;
-DROP TABLE vaccination_facility;
-DROP TABLE Vaccine_type;
-DROP TABLE current_eligible_group;
-DROP TABLE age_group;
-DROP TABLE healthcare_worker;
-DROP TABLE infection;
+DROP TABLE Works_At;
+DROP TABLE Vaccination_Facility;
+DROP TABLE Vaccine_Type;
+DROP TABLE Current_Eligible_Group;
+DROP TABLE Age_Group;
+DROP TABLE HealthCare_Worker;
+DROP TABLE Infection;
 DROP TABLE Person;
-DROP TABLE Postal_code;
+DROP TABLE Postal_Code;
 
 /*---------------------------------------------------
   -----------------------Queries---------------------
@@ -208,23 +208,26 @@ DELIMITER ;
 
 DROP TRIGGER shipment_update;
 
- -- QUERY 10
+ -- QUERY 10 
+ 
 DELIMITER //
 CREATE TRIGGER transfer_update
 BEFORE INSERT ON Transfers FOR EACH ROW
-BEGIN 
+	BEGIN 
 
-    UPDATE Inventory
-    SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines
-    WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
-    
-	UPDATE Inventory
-    SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
-    WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
-    
-END//
+		IF ((SELECT Inventory.number_of_vaccines FROM Inventory WHERE (Inventory.facility_name = New.transfer_out) AND (Inventory.type_name = New.vaccine_type)) >= New.number_of_vaccines) THEN
+			UPDATE Inventory
+			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines 
+			WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
+			
+			UPDATE Inventory
+			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
+			WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
+		END IF;
+		
+	END//
+
 DELIMITER ;
-
 DROP TRIGGER transfer_update;    
 
     -- QUERY 11 
@@ -279,3 +282,23 @@ inner join Vaccination_Facility as VF on I.facility_name = VF.facility_name
 inner join Postal_Code as PC on VF.postal_code = PC.postal_code
 group by PC.province
 order by PC.province asc, I.number_of_vaccines desc;
+
+
+
+
+
+
+-- DUMMY DATA
+INSERT INTO Postal_Code VALUES('G0R1T0', 'Montreal', 'QC');
+INSERT INTO Postal_Code VALUES('G0A3J0', 'Montreal', 'QC');
+INSERT INTO Postal_Code VALUES ('M4S1A4', 'Toronto', 'ON');
+INSERT INTO Person VALUES('303395586','123456789', 'Roy', 'Wetmore', '1976-12-27', 'roy.wetmore@gmail.com', '4182452870', 'Canadian', '539 sherbrooke st.', 'G0R1T0');
+INSERT INTO Person VALUES('575003660','123456788','Mary', 'Dillard', '1941-4-14', 'mary.dillard@hotmail.com', '4184386204', 'Canadian', '3105 ccool st.',  'G0A3J0');
+INSERT INTO Vaccination_Facility VALUES ('University Of Toronto', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
+INSERT INTO Vaccination_Facility VALUES ('Olympic Stadium', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
+INSERT INTO Vaccine_Type VALUES ('Pfizer', 'SAFE', '2020-12-09', NULL);
+INSERT INTO Vaccine_Type VALUES ('Moderna', 'SAFE', '2020-12-14', NULL);
+INSERT INTO Vaccine_Type VALUES('Astrazeneca','SUSPENDED','2020-11-15','2021-02-26');
+INSERT INTO Vaccine_Type  VALUES('Johnson & Johnson','SUSPENDED','2021-12-04', '2021-03-05');
