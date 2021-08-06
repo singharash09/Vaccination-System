@@ -24,15 +24,15 @@ include_once '../../config/db.php';
                               <label for="facilityType" class="form-label">Facility Type</label>
                               <input type="text" class="form-control" id="facilityType" name="facilityType"  placeholder="ABCD12345"     required>
                           </div>
-                          <div class="col-sm-3">
+                          <div class="col-sm-6">
                               <label for="facilityWebAdress" class="form-label">Web address</label>
                               <input type="text" class="form-control" name="facilityWebAdress" id="facilityWebAdress"   >                        
                           </div>
-                          <div class="col-sm-3">
+                          <div class="col-sm-6">
                               <label for="facilityPhoneNumber" class="form-label">Phone Number</label>
                               <input type="text" class="form-control" id="facilityPhoneNumber" name="facilityPhoneNumber" placeholder="5141234567" maxlength="30" required>
                           </div> 
-                          <div class="col-sm-10">
+                          <div class="col-sm-6">
                               <label for="facilityAddress" class="form-label">Address</label>
                               <input type="text" class="form-control" id="facilityAddress"  name="facilityAddress" placeholder="e.g: 123 Super Street" maxlength="255" required>
                           </div>                           
@@ -44,9 +44,21 @@ include_once '../../config/db.php';
                               <label for="facilityPostalCode" class="form-label">Postal Code</label>
                               <input type="text" class="form-control" id="facilityPostalCode"  name="facilityPostalCode" placeholder="M4S2T1" minlength="6" maxlength="6" required>                            
                           </div>                          
-                          <div class="col-sm-2">
-                              <label for="facilityProvince" class="form-label">Province</label>
-                              <input type="text" class="form-control" id="facilityProvince"  name="facilityProvince" placeholder="QC" maxlength="2" required>
+                          <div class="col-sm-2">                              
+                          <label for="facilityProvince" class="form-label">Province</label>
+                              <select class="form-select" name="facilityProvince" id="facilityProvince" aria-label="Select Type" required>
+                                <option>Select</option>
+                                  <?php
+                                  $query1 = "SELECT province_code FROM Province;";
+                                  $result = mysqli_query($conn, $query1);
+                                  $resultCheck = mysqli_num_rows($result);
+                                  if($resultCheck>0){
+                                      while($row = mysqli_fetch_assoc($result)){
+                                          echo '<option value="'.$row['province_code'].'">'.$row['province_code'].'</option>';
+                                        }
+                                    }
+                                  ?>
+                                </select> 
                           </div> 
                           <div>
                              <button class="btn btn-success" type="submit">Add Facility</button>

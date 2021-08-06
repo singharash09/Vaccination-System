@@ -94,8 +94,24 @@ include_once '../../config/db.php';
                               <input type="text" value="<?php echo  $editPersonPostalCode?>" class="form-control" id="personPostalCode"  name="personPostalCode" placeholder="M4S2T1" minlength="6" maxlength="6" required>                            
                           </div>                          
                           <div class="col-sm-2">
-                              <label for="personProvince" class="form-label">Province</label>
-                              <input type="text" value="<?php echo  $editPersonProvince?>" class="form-control" id="personProvince"  name="personProvince" placeholder="QC" maxlength="2" required>
+                            <label for="personProvince" class="form-label">Province</label>
+                              <select class="form-select" name="personProvince" id="personProvince" aria-label="Select Type" required>
+                                <option>Select</option>
+                                  <?php
+                                  $query1 = "SELECT province_code FROM Province;";
+                                  $result = mysqli_query($conn, $query1);
+                                  $resultCheck = mysqli_num_rows($result);
+                                  if($resultCheck>0){
+                                      while($row = mysqli_fetch_assoc($result)){
+                                          if($row['province_code'] == $editPersonProvince){
+                                              echo '<option value="'.$row['province_code'].'" selected>'.$row['province_code'].'</option>';
+                                          }else{
+                                              echo '<option value="'.$row['province_code'].'">'.$row['province_code'].'</option>';
+                                          }
+                                        }
+                                    }
+                                  ?>
+                                </select>
                           </div>   
                           <div>
                              <button class="btn btn-secondary" type="submit">Update</button>

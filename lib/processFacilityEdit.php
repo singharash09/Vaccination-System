@@ -23,7 +23,7 @@ echo "PROVINCE: ". $facilityPostalCode . "\n";
 echo "POSTAL CODE: ". $facilityPostalCode . "\n";
 
 $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$facilityPostalCode', '$facilityCity', '$facilityProvince') 
-ON DUPLICATE KEY UPDATE city='$facilityCity', province='$facilityProvince';";
+ON DUPLICATE KEY UPDATE city='$facilityCity', province_code='$facilityProvince';";
 
 $query2 = "UPDATE Vaccination_Facility
 SET facility_type='$facilityType', web_address='$facilityWebAdress', phone_number='$facilityPhoneNumber',  address='$facilityAddress', postal_code='$facilityPostalCode'
