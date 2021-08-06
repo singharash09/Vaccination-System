@@ -17,8 +17,8 @@ include_once '../../config/db.php';
                    <div class="card-body">
                        <form class="row g-3" style="text-align: left;" action="../../lib/processTransfersInsertion.php" method="POST">
                           <div class="col-sm-6">
-                              <label for="transfersFacilityIN" class="form-label">Receiving Facility Name</label>
-                              <select class="form-select" name="transfersFacilityIN" id="transfersFacilityIN" aria-label="Select Facility">
+                              <label for="transfersFacilityOUT" class="form-label">Sending Facility Name</label>
+                              <select class="form-select" name="transfersFacilityOUT" id="transfersFacilityOUT" aria-label="Select Facility">
                                 <option>Select</option>
                                   <?php
                                   $query1 = "SELECT facility_name FROM Vaccination_Facility;";
@@ -33,8 +33,8 @@ include_once '../../config/db.php';
                                 </select>
                           </div>
                           <div class="col-sm-6">
-                              <label for="transfersFacilityOUT" class="form-label">Sending Facility Name</label>
-                              <select class="form-select" name="transfersFacilityOUT" id="transfersFacilityOUT" aria-label="Select Facility">
+                              <label for="transfersFacilityIN" class="form-label">Receiving Facility Name</label>
+                              <select class="form-select" name="transfersFacilityIN" id="transfersFacilityIN" aria-label="Select Facility">
                                 <option>Select</option>
                                   <?php
                                   $query1 = "SELECT facility_name FROM Vaccination_Facility;";
