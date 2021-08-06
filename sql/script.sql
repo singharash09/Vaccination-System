@@ -27,7 +27,7 @@ CREATE TABLE Person (
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
     
-    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code),
+    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (SSN)
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE Infection (
     date_of_infection DATE NOT NULL,    
     type_of_infection VARCHAR(30) NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES Person(SSN),
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     PRIMARY KEY(SSN, date_of_infection)
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE HealthCare_Worker(
     SSN CHAR(9),
     EID CHAR(9) NOT NULL,
 
-    FOREIGN KEY(SSN) REFERENCES Person(SSN),
+    FOREIGN KEY(SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     PRIMARY KEY(SSN)
     );
 
@@ -61,7 +61,7 @@ CREATE TABLE Current_Eligible_Group(
     eligible_group_id INTEGER,
     province CHAR(2) NOT NULL,
     
-    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id),
+    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
     PRIMARY KEY (province)
 );
 
@@ -87,7 +87,7 @@ CREATE TABLE Vaccination_Facility (
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
     
-    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code),
+    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (facility_name)
 );
 
@@ -98,8 +98,8 @@ CREATE TABLE Works_At(
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
 );
 
@@ -110,8 +110,8 @@ CREATE TABLE Manages(
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
 );
 
@@ -127,10 +127,10 @@ CREATE TABLE Vaccination(
     date_of_vaccination DATE,
     Employee_SSN CHAR(9),
     
-    FOREIGN KEY (Employee_SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (SSN) REFERENCES Person(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
+    FOREIGN KEY (Employee_SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
     PRIMARY KEY (vaccination_id)
 );
 
@@ -140,8 +140,8 @@ CREATE TABLE Inventory(
     number_of_vaccines int NOT NULL,
     type_name VARCHAR(30),
 
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (facility_name, type_name)
 );
 
@@ -152,8 +152,8 @@ CREATE TABLE Shipment(
     date_of_transfer DATE NOT NULL,
     facility_name VARCHAR(30),
 
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (shipment_ID)
 );
 
@@ -165,9 +165,9 @@ CREATE TABLE Transfers(
     number_of_vaccines INT NOT NULL,
     date_of_transfer DATE NOT NULL,
 
-    FOREIGN KEY (vaccine_type) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (transfer_in) REFERENCES Vaccination_Facility(facility_name),
-    FOREIGN KEY (transfer_out) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (vaccine_type) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
+    FOREIGN KEY (transfer_in) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
+    FOREIGN KEY (transfer_out) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
 
     PRIMARY KEY(transfer_ID)
 );
