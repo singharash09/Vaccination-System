@@ -217,15 +217,20 @@ DELIMITER //
 CREATE TRIGGER transfer_update
 BEFORE INSERT ON Transfers FOR EACH ROW
 	BEGIN 
-
-		IF ((SELECT Inventory.number_of_vaccines FROM Inventory WHERE (Inventory.facility_name = New.transfer_out) AND (Inventory.type_name = New.vaccine_type)) >= New.number_of_vaccines) THEN
-			UPDATE Inventory
-			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines 
-			WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
+		
+        
+			IF ((((SELECT Inventory.number_of_vaccines FROM Inventory WHERE (Inventory.facility_name = New.transfer_out) AND (Inventory.type_name = New.vaccine_type)) >= New.number_of_vaccines)) AND 
+            (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_in AND type_name = NEW.vaccine_type)))
+			THEN
+				UPDATE Inventory
+				SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines 
+				WHERE Inventory.facility_name = New.transfer_in AND Inventory.type_name = New.vaccine_type;
 			
-			UPDATE Inventory
-			SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
-			WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
+				UPDATE Inventory
+				SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
+				WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
+            ELSE 
+				INSERT INTO Inventory VALUES (NEW.transfer_in, NEW.number_of_vaccines, NEW.vaccine_type);
 		END IF;
 		
 	END//
@@ -318,6 +323,9 @@ INSERT INTO Vaccine_Type  VALUES('Johnson & Johnson','SUSPENDED','2021-12-04', '
 INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
 INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 
+
+SELECT * FROM Inventory;
+INSERT INTO Transfers VALUES (null,'University Of Toronto','Olympic Stadium','Pfizer',20,'2021-08-06');
 SELECT * FROM Vaccination_Facility;
 SELECT * FROM Postal_Code;
 SELECT*FROM Vaccination_Facility, Postal_Code WHERE Vaccination_Facility.postal_code = Postal_Code.postal_code;
@@ -327,7 +335,8 @@ SELECT*FROM Province;
 DELETE FROM Inventory;
 DELETE FROM Shipment;
 DELETE FROM Vaccination_Facility WHERE facility_name='Olympic Stadium';
-
+SELECT * FROM Transfers;
+DELETE FROM Transfers;
 INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('G0A3J0', 'Toronto', 'ON')
 ON DUPLICATE KEY UPDATE city='Toronto', province_code='ON';
 DELETE FROM Postal_Code;
