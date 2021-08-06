@@ -27,7 +27,7 @@ CREATE TABLE Person (
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
     
-    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code),
+    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (SSN)
 );
 
@@ -87,7 +87,7 @@ CREATE TABLE Vaccination_Facility (
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
     
-    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code),
+    FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (facility_name)
 );
 
@@ -296,9 +296,9 @@ order by PC.province asc, I.number_of_vaccines desc;
 INSERT INTO Postal_Code VALUES('G0R1T0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES('G0A3J0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES ('M4S1A4', 'Toronto', 'ON');
-INSERT INTO Person VALUES('303395586','123456789', 'Roy', 'Wetmore', '1976-12-27', 'roy.wetmore@gmail.com', '4182452870', 'Canadian', '539 sherbrooke st.', 'G0R1T0');
+INSERT INTO Person VALUES('303395586','123456789', 'Roy', 'Wetmore', '1976-12-27', 'roy.wetmore@gmail.com', '4182452870', 'Canadian', '539 sherbrooke st.', 'G0A3J0');
 INSERT INTO Person VALUES('575003660','123456788','Mary', 'Dillard', '1941-4-14', 'mary.dillard@hotmail.com', '4184386204', 'Canadian', '3105 ccool st.',  'G0A3J0');
-INSERT INTO Vaccination_Facility VALUES ('University Of Toronto', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
+INSERT INTO Vaccination_Facility VALUES ('University Of Toronto', 'School', 'https://www.utoronto.ca/', '6474799611', '35','G0A3J0');
 INSERT INTO Vaccination_Facility VALUES ('Olympic Stadium', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
 INSERT INTO Vaccine_Type VALUES ('Pfizer', 'SAFE', '2020-12-09', NULL);
 INSERT INTO Vaccine_Type VALUES ('Moderna', 'SAFE', '2020-12-14', NULL);
@@ -315,3 +315,7 @@ SELECT*FROM Shipment;
 DELETE FROM Inventory;
 DELETE FROM Shipment;
 DELETE FROM Vaccination_Facility WHERE facility_name='Olympic Stadium';
+
+INSERT INTO Postal_Code  (postal_code, city, province) VALUES('G0A3J0', 'Toronto', 'ON')
+ON DUPLICATE KEY UPDATE city='Toronto', province='ON';
+DELETE FROM Postal_Code;
