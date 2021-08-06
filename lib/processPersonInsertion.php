@@ -29,7 +29,7 @@ $personPostalCode= $_POST['personPostalCode'];
 // echo "POSTAL CODE: ". $personPostalCode . "\n";
 
 
-$query1 = "INSERT INTO Postal_Code  (postal_code, city, province) VALUES('$personPostalCode', '$personCity', '$personProvince') 
+$query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
 ON DUPLICATE KEY UPDATE city='$personCity', province='$personProvince';";
 
 $query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)

@@ -42,7 +42,7 @@ include_once '../../config/db.php';
                                $editPersonCitizenship = $row['citizenship'];
                                $editPersonAddress = $row['address'];
                                $editPersonCity = $row['city'];
-                               $editPersonProvince = $row['province'];
+                               $editPersonProvince = $row['province_code'];
                                $editPersonPostalCode = $row['postal_code'];
 
                            }

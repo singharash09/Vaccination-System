@@ -56,7 +56,7 @@ include_once '../../config/db.php';
                         <td>'.$row['citizenship'].'</td>
                         <td>'.$row['address'].'</td>
                         <td>'.$row['city'].'</td>
-                        <td>'.$row['province'].'</td>
+                        <td>'.$row['province_code'].'</td>
                         <td>'.$row['postal_code'].'</td>
                         <td><a href="../../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
                         <td><a href="editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>

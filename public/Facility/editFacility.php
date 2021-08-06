@@ -38,7 +38,7 @@ include_once '../../config/db.php';
                                $editFacilityPhoneNumber = $row['phone_number'];
                                $editFacilityAddress = $row['address'];
                                $editFacilityCity = $row['city'];
-                               $editFacilityProvince = $row['province'];
+                               $editFacilityProvince = $row['province_code'];
                                $editFacilityPostalCode = $row['postal_code'];                            
                            }
                        }

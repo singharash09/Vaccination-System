@@ -29,8 +29,9 @@ include_once '../../config/db.php';
                     <th scope="col-md">Facility Type</th>
                     <th scope="col-md">Web address</th>
                     <th scope="col-md">Phone Number</th>
-                    <th scope="col-md">address</th>
+                    <th scope="col-md">Address</th>
                     <th scope="col-md">Postal Code</th>
+                    <th scope="col-md">Province</th>
                     <th scope="col-sm"></th>
                     <th scope="col-sm"></th>           
                     <th scope="col-sm"></th>                                 
@@ -50,6 +51,7 @@ include_once '../../config/db.php';
                         <td>'.$row['phone_number'].'</td>
                         <td>'.$row['address'].'</td>
                         <td>'.$row['postal_code'].'</td>
+                        <td>'.$row['province_code'].'</td>                        
                         <td><a href="../../lib/processFacilityDeletion.php?facilityToDelete='.$row['facility_name'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
                         <td><a href="editFacility.php?facilityEditName='.$row['facility_name'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-edit"></i></a></td>
                         <td><a href="viewInventory.php?facilityInventoryName='.$row['facility_name'].'" type="button" class="btn btn-outline-primary button-style"><i class="fas fa-box-open"></i></a></td>
