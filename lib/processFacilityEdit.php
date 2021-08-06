@@ -32,6 +32,6 @@ mysqli_query($conn, $query1);
 mysqli_query($conn, $query2);
 
 
-//header("Location: ../public/facility/Facility.php?edit=success");
+header("Location: ../public/facility/Facility.php?edit=success");
 
 ?>
