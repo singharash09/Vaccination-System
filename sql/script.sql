@@ -36,7 +36,7 @@ CREATE TABLE Infection (
     date_of_infection DATE NOT NULL,    
     type_of_infection VARCHAR(30) NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES Person(SSN),
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     PRIMARY KEY(SSN, date_of_infection)
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE HealthCare_Worker(
     SSN CHAR(9),
     EID CHAR(9) NOT NULL,
 
-    FOREIGN KEY(SSN) REFERENCES Person(SSN),
+    FOREIGN KEY(SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     PRIMARY KEY(SSN)
     );
 
@@ -61,7 +61,7 @@ CREATE TABLE Current_Eligible_Group(
     eligible_group_id INTEGER,
     province CHAR(2) NOT NULL,
     
-    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id),
+    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
     PRIMARY KEY (province)
 );
 
@@ -98,8 +98,8 @@ CREATE TABLE Works_At(
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
 );
 
@@ -110,8 +110,8 @@ CREATE TABLE Manages(
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
     
-    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
 );
 
@@ -127,10 +127,10 @@ CREATE TABLE Vaccination(
     date_of_vaccination DATE,
     Employee_SSN CHAR(9),
     
-    FOREIGN KEY (Employee_SSN) REFERENCES HealthCare_Worker(SSN),
-    FOREIGN KEY (SSN) REFERENCES Person(SSN),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
+    FOREIGN KEY (Employee_SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name)ON DELETE CASCADE,
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
     PRIMARY KEY (vaccination_id)
 );
 
@@ -140,8 +140,8 @@ CREATE TABLE Inventory(
     number_of_vaccines int NOT NULL,
     type_name VARCHAR(30),
 
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (facility_name, type_name)
 );
 
@@ -152,8 +152,8 @@ CREATE TABLE Shipment(
     date_of_transfer DATE NOT NULL,
     facility_name VARCHAR(30),
 
-    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE ,
+    FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (shipment_ID)
 );
 
@@ -165,9 +165,9 @@ CREATE TABLE Transfers(
     number_of_vaccines INT NOT NULL,
     date_of_transfer DATE NOT NULL,
 
-    FOREIGN KEY (vaccine_type) REFERENCES Vaccine_Type(type_name),
-    FOREIGN KEY (transfer_in) REFERENCES Vaccination_Facility(facility_name),
-    FOREIGN KEY (transfer_out) REFERENCES Vaccination_Facility(facility_name),
+    FOREIGN KEY (vaccine_type) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
+    FOREIGN KEY (transfer_in) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
+    FOREIGN KEY (transfer_out) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
 
     PRIMARY KEY(transfer_ID)
 );
@@ -198,12 +198,16 @@ DROP TABLE Postal_Code;
 DELIMITER //
 CREATE TRIGGER shipment_update
 BEFORE INSERT ON Shipment FOR EACH ROW
-BEGIN 
-
-    UPDATE Inventory
+BEGIN
+    IF(EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.facility_name AND type_name = NEW.type_name))
+    THEN 
+	UPDATE Inventory
     SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines
     WHERE Inventory.facility_name = New.facility_name AND Inventory.type_name = New.type_name;
-END//
+    ELSE 
+    INSERT INTO Inventory VALUES (NEW.facility_name, NEW.number_of_vaccines, NEW.type_name);
+    END IF;
+END //
 DELIMITER ;
 
 DROP TRIGGER shipment_update;
@@ -288,7 +292,7 @@ order by PC.province asc, I.number_of_vaccines desc;
 
 
 
--- DUMMY DATA
+-- DUMMY DATA USED BY ARASH
 INSERT INTO Postal_Code VALUES('G0R1T0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES('G0A3J0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES ('M4S1A4', 'Toronto', 'ON');
@@ -296,9 +300,18 @@ INSERT INTO Person VALUES('303395586','123456789', 'Roy', 'Wetmore', '1976-12-27
 INSERT INTO Person VALUES('575003660','123456788','Mary', 'Dillard', '1941-4-14', 'mary.dillard@hotmail.com', '4184386204', 'Canadian', '3105 ccool st.',  'G0A3J0');
 INSERT INTO Vaccination_Facility VALUES ('University Of Toronto', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
 INSERT INTO Vaccination_Facility VALUES ('Olympic Stadium', 'School', 'https://www.utoronto.ca/', '6474799611', '35','M4S1A4');
-INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
-INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 INSERT INTO Vaccine_Type VALUES ('Pfizer', 'SAFE', '2020-12-09', NULL);
 INSERT INTO Vaccine_Type VALUES ('Moderna', 'SAFE', '2020-12-14', NULL);
 INSERT INTO Vaccine_Type VALUES('Astrazeneca','SUSPENDED','2020-11-15','2021-02-26');
 INSERT INTO Vaccine_Type  VALUES('Johnson & Johnson','SUSPENDED','2021-12-04', '2021-03-05');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
+INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
+
+SELECT * FROM Vaccination_Facility;
+SELECT * FROM Postal_Code;
+SELECT*FROM Vaccination_Facility, Postal_Code WHERE Vaccination_Facility.postal_code = Postal_Code.postal_code;
+SELECT*FROM Inventory;
+SELECT*FROM Shipment;
+DELETE FROM Inventory;
+DELETE FROM Shipment;
+DELETE FROM Vaccination_Facility WHERE facility_name='Olympic Stadium';
