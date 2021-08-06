@@ -59,7 +59,7 @@ include_once '../../config/db.php';
                           </div>                         
 
                          <div class="col-sm-6"> 
-                             <button class="btn btn-success" type="submit">Add Facility</button>
+                             <button class="btn btn-success" type="submit">Ship</button>
                          </div>
                           </div>
                           </div>                                            
