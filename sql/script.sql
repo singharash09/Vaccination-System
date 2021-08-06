@@ -3,12 +3,18 @@
 /*---------------------------------------------------
   -------------------Creating Tables----------------- 
   ---------------------------------------------------*/
+CREATE TABLE Province(
+	province_code CHAR(2) NOT NULL,
+	province_name CHAR(30) NOT NULL,
+    PRIMARY KEY (province_code)
+);
 
 CREATE TABLE Postal_Code (
     postal_code CHAR(6) NOT NULL,
 	city VARCHAR(30) NOT NULL,
-	province CHAR(2) NOT NULL,
-
+	province_code CHAR(2) NOT NULL,
+	
+    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE,
     PRIMARY KEY (postal_code)
 );
 
@@ -59,10 +65,11 @@ CREATE TABLE Age_Group (
 -- current eligible age group
 CREATE TABLE Current_Eligible_Group( 
     eligible_group_id INTEGER,
-    province CHAR(2) NOT NULL,
+    province_code CHAR(2) NOT NULL,
     
+    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE,
     FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
-    PRIMARY KEY (province)
+    PRIMARY KEY (province_code)
 );
 
 -- Entity Vaccine_Type
@@ -189,6 +196,7 @@ DROP TABLE HealthCare_Worker;
 DROP TABLE Infection;
 DROP TABLE Person;
 DROP TABLE Postal_Code;
+DROP TABLE Province;
 
 /*---------------------------------------------------
   -----------------------Queries---------------------
@@ -293,6 +301,8 @@ order by PC.province asc, I.number_of_vaccines desc;
 
 
 -- DUMMY DATA USED BY ARASH
+INSERT INTO Province VALUES('QC','Quebec');
+INSERT INTO Province VALUES('ON','Ontario');
 INSERT INTO Postal_Code VALUES('G0R1T0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES('G0A3J0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES ('M4S1A4', 'Toronto', 'ON');
@@ -316,6 +326,6 @@ DELETE FROM Inventory;
 DELETE FROM Shipment;
 DELETE FROM Vaccination_Facility WHERE facility_name='Olympic Stadium';
 
-INSERT INTO Postal_Code  (postal_code, city, province) VALUES('G0A3J0', 'Toronto', 'ON')
-ON DUPLICATE KEY UPDATE city='Toronto', province='ON';
+INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('G0A3J0', 'Toronto', 'ON')
+ON DUPLICATE KEY UPDATE city='Toronto', province_code='ON';
 DELETE FROM Postal_Code;
