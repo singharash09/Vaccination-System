@@ -3,9 +3,19 @@
 /*---------------------------------------------------
   -------------------Creating Tables----------------- 
   ---------------------------------------------------*/
+-- Entity Age Group
+CREATE TABLE Age_Group (
+    group_id INTEGER,
+    min_age INTEGER,
+    max_age INTEGER,
+    PRIMARY KEY (group_id)
+);
+
 CREATE TABLE Province(
 	province_code CHAR(2) NOT NULL,
-	province_name CHAR(30) NOT NULL,
+	eligible_group_id INTEGER NOT NULL,
+    
+    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
     PRIMARY KEY (province_code)
 );
 
@@ -53,24 +63,6 @@ CREATE TABLE HealthCare_Worker(
     FOREIGN KEY(SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     PRIMARY KEY(SSN)
     );
-
--- Entity Age Group
-CREATE TABLE Age_Group (
-    group_id INTEGER,
-    min_age INTEGER,
-    max_age INTEGER,
-    PRIMARY KEY (group_id)
-);
-
--- current eligible age group
-CREATE TABLE Current_Eligible_Group( 
-    eligible_group_id INTEGER,
-    province_code CHAR(2) NOT NULL,
-    
-    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE,
-    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
-    PRIMARY KEY (province_code)
-);
 
 -- Entity Vaccine_Type
 CREATE TABLE Vaccine_Type (
@@ -190,13 +182,12 @@ DROP TABLE Manages;
 DROP TABLE Works_At;
 DROP TABLE Vaccination_Facility;
 DROP TABLE Vaccine_Type;
-DROP TABLE Current_Eligible_Group;
-DROP TABLE Age_Group;
 DROP TABLE HealthCare_Worker;
 DROP TABLE Infection;
 DROP TABLE Person;
 DROP TABLE Postal_Code;
 DROP TABLE Province;
+DROP TABLE Age_Group;
 
 /*---------------------------------------------------
   -----------------------Queries---------------------
@@ -301,8 +292,18 @@ order by PC.province asc, I.number_of_vaccines desc;
 
 
 -- DUMMY DATA USED BY ARASH
-INSERT INTO Province VALUES('QC','Quebec');
-INSERT INTO Province VALUES('ON','Ontario');
+INSERT INTO Age_Group VALUES (1, 80, 130);
+INSERT INTO Age_Group VALUES (2, 70, 79);
+INSERT INTO Age_Group VALUES (3, 60, 69);
+INSERT INTO Age_Group VALUES (4, 60, 59);
+INSERT INTO Age_Group VALUES (5, 40, 49);
+INSERT INTO Age_Group VALUES(6,30,39);
+INSERT INTO Age_Group VALUES(7,18,29);
+INSERT INTO Age_Group VALUES(8,12,17);
+INSERT INTO Age_Group VALUES(9,5,11);
+INSERT INTO Age_Group VALUES(10,0,4);
+INSERT INTO Province VALUES('QC',8);
+INSERT INTO Province VALUES('ON',7);
 INSERT INTO Postal_Code VALUES('G0R1T0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES('G0A3J0', 'Montreal', 'QC');
 INSERT INTO Postal_Code VALUES ('M4S1A4', 'Toronto', 'ON');
@@ -322,6 +323,7 @@ SELECT * FROM Postal_Code;
 SELECT*FROM Vaccination_Facility, Postal_Code WHERE Vaccination_Facility.postal_code = Postal_Code.postal_code;
 SELECT*FROM Inventory;
 SELECT*FROM Shipment;
+SELECT*FROM Province;
 DELETE FROM Inventory;
 DELETE FROM Shipment;
 DELETE FROM Vaccination_Facility WHERE facility_name='Olympic Stadium';
