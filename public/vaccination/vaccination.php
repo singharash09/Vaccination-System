@@ -18,24 +18,37 @@ include_once '../templates/header.php';
                 <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-syringe"></i>  Vaccination</h1></div>
             </div>
             
-            <div class="row">
-                <div class="col-lg-12 center-element">
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:20px; padding: 5vw; font-weight: bolder;">
+            <div class="row text-center cell">
+                <div class="col-lg-2 cell">
+                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;  padding: 1vw;font-weight: bolder;">
+                    <i class="fas fa-table  fa-5x"></i></br></br>
+                    &nbsp;&nbsp;Vaccinations&nbsp;&nbsp;
+                    </a>   
+                 </div> 
+                <div class="col-lg-2">
+                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;   padding: 1vw;font-weight: bolder;">
                     <i class="fas fa-flask fa-5x"></i></br></br>
                     Vaccine Types
                     </a>      
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:20px; padding: 5vw; font-weight: bolder;">
-                    <i class="fas fa-table  fa-5x"></i></br></br>
-                    Vaccinations
-                    </a>    
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block;text-align: center; margin:20px;  padding: 5vw; font-weight: bolder;">
+                </div>
+                   <div class="col-lg-2 cell">               
+                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block;text-align: center; margin:10px;  padding: 1vw; font-weight: bolder;">
                     <i class="fas fa-user-circle fa-5x"></i></br></br>
                     &nbsp;&nbsp;&nbsp;Age Group &nbsp;&nbsp;&nbsp;
                     </a>  
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:20px; padding: 5vw; font-weight: bolder;">
+                   </div>
+                   <div class="col-lg-2 cell">                   
+                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px; padding: 1vw; font-weight: bolder;">
                     <i class="fas fa-map fa-5x"></i></br></br>
                     &nbsp;&nbsp;&nbsp;&nbsp;Province&nbsp;&nbsp;&nbsp;&nbsp;
-                </a>            
+                    </a> 
+                   </div>   
+                     <div class="col-lg-2 cell">                       
+                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px; padding: 1vw; font-weight: bolder;">
+                    <i class="fas fa-viruses fa-5x"></i></br></br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Variants&nbsp;&nbsp;&nbsp;&nbsp;
+                    </a> 
+                     </div>       
             </div>
         </div>
     </body>
