@@ -34,6 +34,6 @@ mysqli_query($conn, $query1);
 mysqli_query($conn, $query2);
 
 
-header("Location: ../public/employees/Employee.php?edit=success");
+header("Location: ../public/employees/employees.php?edit=success");
 
 ?>

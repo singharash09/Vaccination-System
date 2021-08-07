@@ -25,7 +25,7 @@ include_once '../../config/db.php';
             <div class="row" style="text-align: center;">
                <div class="card">
                    <div class="card-body">
-                       <form class="row g-3" style="text-align: left;" action="../../lib/processEmployeeEdit.php" method="POST">                       
+                       <form class="row g-3" style="text-align: left;" action="../../lib/processEmployeeEdit.php"  method="POST">                       
                        <?php
                        $query = "SELECT * FROM HealthCare_Worker, Works_At WHERE HealthCare_Worker.SSN = Works_At.SSN AND HealthCare_Worker.SSN =$employeeEditSSN ;";
                        $result = mysqli_query($conn, $query);

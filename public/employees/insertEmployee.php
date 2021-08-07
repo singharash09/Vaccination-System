@@ -22,9 +22,9 @@ include_once '../../config/db.php';
                             <label for="employeeSSN" class="form-label">SSN</label>
                               <select class="form-select" name="employeeSSN" id="employeeSSN" aria-label="Select Type" required>
                                 <option>Select</option>
-                                  <?php
-                                  // $query1 = "SELECT Person.SSN FROM Person,HealthCare_Worker WHERE Person.SSN <> HealthCare_Worker.SSN;";
-                                $query1 = "SELECT Person.SSN FROM Person;";
+                                <?php
+                                 $query1 = "SELECT Person.SSN FROM Person WHERE Person.SSN NOT IN(SELECT HealthCare_Worker.SSN from HealthCare_Worker);";
+                               
                                   $result = mysqli_query($conn, $query1);
 
                                   $resultCheck = mysqli_num_rows($result);
@@ -34,6 +34,7 @@ include_once '../../config/db.php';
                                         }
                                     }
                                   ?>
+
                                 </select> 
                           </div>
 

@@ -27,6 +27,8 @@ include_once '../../config/db.php';
                 <tr>
                     <th scope="col-md">SSN</th>
                     <th scope="col-md">EID</th> 
+                    <th scope="col-md">First Name</th> 
+                    <th scope="col-md">Last Name</th> 
                     <th scope="col-md">Name of Facility Working at</th>
                     <th scope="col-md">Start Date</th>                  
                     <th scope="col-sm">End Date</th>
@@ -36,7 +38,7 @@ include_once '../../config/db.php';
             </thead>
             <tbody>
                 <?php
-                $query = "SELECT * FROM HealthCare_Worker, Works_At WHERE HealthCare_Worker.SSN = Works_At.SSN;";
+                $query = "SELECT * FROM HealthCare_Worker, Works_At, Person WHERE HealthCare_Worker.SSN = Works_At.SSN AND Person.SSN = HealthCare_Worker.SSN;";
                 $result = mysqli_query($conn, $query);
                 $resultCheck = mysqli_num_rows($result);
       
@@ -44,6 +46,8 @@ include_once '../../config/db.php';
                     while($row = mysqli_fetch_assoc($result)){
                         echo '<tr><th scope="row">'.$row['SSN'].'</th>
                         <td>'.$row['EID'].'</td>
+                        <td>'.$row['first_name'].'</td>
+                        <td>'.$row['last_name'].'</td>
                         <td>'.$row['facility_name'].'</td>
                         <td>'.$row['start_date'].'</td>
                         <td>'.$row['end_date'].'</td>
@@ -55,3 +59,7 @@ include_once '../../config/db.php';
                 ?>
             </tbody>
         </table>
+
+        </body>
+        </div>
+</html>
