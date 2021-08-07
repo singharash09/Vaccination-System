@@ -35,7 +35,7 @@ CREATE TABLE Person (
     first_name VARCHAR(30),
 	last_name VARCHAR(30),
     date_of_birth DATE NOT NULL,
-	email_address CHAR(30) DEFAULT 'unknown',
+	email_address CHAR(90) DEFAULT 'unknown',
     telephone_number CHAR(30) DEFAULT 'unknown',    
 	citizenship CHAR(30) NOT NULL,
     
@@ -47,12 +47,18 @@ CREATE TABLE Person (
     PRIMARY KEY (SSN)
 );
 
+CREATE TABLE Infection_Type(
+    type_of_infection VARCHAR(30) NOT NULL,
+    PRIMARY KEY(type_of_infection)
+);
+
 CREATE TABLE Infection (
     SSN CHAR(9) NOT NULL,
     date_of_infection DATE NOT NULL,    
-    type_of_infection VARCHAR(30) NOT NULL,
+    type_of_infection VARCHAR(30),
     
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
+    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection),
     PRIMARY KEY(SSN, date_of_infection)
 );
 
