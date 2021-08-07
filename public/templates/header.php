@@ -37,7 +37,7 @@
                     <a class="nav-link" aria-current="page" href="/COMP353/public/Facility/Facility.php"><i class="fas fa-hospital-alt"></i>  Facilities</a>
                 </li>
                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#"><i class="fas fa-user-nurse"></i>  Employees</a>
+                    <a class="nav-link" aria-current="page" href="/COMP353/public/employees/employees.php"><i class="fas fa-user-nurse"></i>  Employees</a>
                 </li>
         </nav>
 
