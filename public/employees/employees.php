@@ -30,7 +30,8 @@ include_once '../../config/db.php';
                     <th scope="col-md">Name of Facility Working at</th>
                     <th scope="col-md">Start Date</th>                  
                     <th scope="col-sm">End Date</th>
-                    <th scope="col-sm"></th>                    
+                    <th scope="col-sm"></th>        
+                     <th scope="col-sm"></th>             
                 </tr>
             </thead>
             <tbody>
