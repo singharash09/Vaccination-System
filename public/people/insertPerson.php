@@ -5,7 +5,7 @@ include_once '../../config/db.php';
 
 <html>
     <head>
-
+        <script type="text/javascript" src="../js/script.js"> </script>
     </head>
     <body>
         <div class="container">
@@ -75,9 +75,18 @@ include_once '../../config/db.php';
                                     }
                                   ?>
                                 </select> 
+                          </div>
+                          <div class="col-sm-2">
+                                <input type="checkbox" id="isEmployee" name="isEmployee" value="isEmployee">
+                                <label for="isEmployee"> Is Employee?</label><br>
                           </div>                         
-                          <div>
-                             <button class="btn btn-success" type="submit">Add person</button>
+                           <div class="col-sm-12">
+                              <label id="employeeLabel"for="employeeInput" class="form-label">Employee ID</label>
+                              <input id="employeeInput" type="text" class="form-control" id="employeeInput"  name="employeeInput" placeholder="123456789" minlength="9" maxlength="9"> 
+                          </div>
+                          <div class="col-sm-12">
+                           <button class="btn btn-success" type="submit">Add person</button>
+                          </div>                                                     
                           </div>
                           </div>                                            
                        </form>
@@ -90,6 +99,21 @@ include_once '../../config/db.php';
 
 
         <script>
+            document.getElementById("employeeLabel").style.display= 'none';
+            document.getElementById("employeeInput").style.display= 'none';
+
+            let element = document.getElementById("isEmployee");
+            document.getElementById("isEmployee").onchange = function(){
+                let isChecked = this.checked;
+
+                if(isChecked){
+                    document.getElementById("employeeLabel").style.display= 'block';
+                    document.getElementById("employeeInput").style.display= 'block';
+                }else{
+                    document.getElementById("employeeLabel").style.display= 'none';
+                    document.getElementById("employeeInput").style.display= 'none';
+                }
+            }
 
         </script>
     </body>
