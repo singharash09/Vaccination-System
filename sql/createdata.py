@@ -1,3 +1,4 @@
+# Script used to generate data for database
 # requirements: faker, pandas, pymysql, sqlalchemy
 import random
 from faker import Faker
@@ -7,18 +8,18 @@ import itertools
 
 # Connect to MySQL 
 from sqlalchemy import create_engine
-engine = create_engine('mysql+pymysql://sjc353_1:sec353CC@sjc353.encs.concordia.ca/sjc353_1', echo=True, pool_pre_ping=True)
+engine = create_engine('mysql+pymysql://sjc353_1:sec353CC@sjc353.encs.concordia.ca/sjc353_1', echo=False)
 
 # fake data generator
 fake = Faker('en_CA')
 Faker.seed(0)
 
 # Number of people to generate
-numPpl = 30
-numWorkers = 6
+numPpl = 10
+numWorkers = 4
 
 # Number of facilities per city
-numFacilities = 3
+numFacilities = 2
 
 # Vaxx start and end dates
 vax_start = datetime.date(2021,1,1)
@@ -28,16 +29,16 @@ vax_end = datetime.date.today()
 Postal_Code = pandas.DataFrame(columns=['postal_code', 'city', 'province_code'])
 
 # For each province 
-provinces = {'NL':{'St. Johns','Mount Pearl'}, 
+provinces = {'NL':{'St. Johns'}, 
              'PE':{'Charlottetown'}, 
-             'NS':{'Halifax', 'Dartmouth'}, 
-             'NB':{'Moncton', 'Fredericton'}, 
+             'NS':{'Halifax'}, 
+             'NB':{'Moncton'}, 
              'QC':{'Montreal', 'Quebec City', 'Laval', 'Gatineau', 'Longueuil'}, 
-             'ON':{'Toronto', 'Ottawa'},
-             'MB':{'Winnipeg', 'Brandon'}, 
-             'SK':{'Saskatoon', 'Regina'}, 
-             'AB':{'Edmonton', 'Calgary'}, 
-             'BC':{'Vancouver', 'Surrey'}, 
+             'ON':{'Toronto'},
+             'MB':{'Winnipeg'}, 
+             'SK':{'Saskatoon'}, 
+             'AB':{'Edmonton'}, 
+             'BC':{'Vancouver'}, 
              'YT':{'Whitehorse'}, 
              'NT':{'Yellowknife'}, 
              'NU':{'Iqaluit'}}
@@ -60,7 +61,7 @@ for province in provinces:
                                                                facility_type, 
                                                                facility_name.replace(' ','') + '.com',
                                                                fake.phone_number(),
-                                                               street_name + street_num,
+                                                               street_num + " " + street_name + " Street",
                                                                pc,
                                                                city]
 
@@ -115,7 +116,10 @@ for province in provinces:
 
             # Create some healthcare workers
             if x < numWorkers:
-                HealthCare_Worker.loc[len(HealthCare_Worker)] = [ssn, fake.ssn().replace(' ', '')]
+                eid = fake.ssn().replace(' ', '')
+                while eid in HealthCare_Worker.SSN.values:
+                    eid = fake.ssn().replace(' ','')
+                HealthCare_Worker.loc[len(HealthCare_Worker)] = [ssn, eid]
 
                 # time worked
                 between = (vax_end - vax_start).days
