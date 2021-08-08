@@ -42,10 +42,8 @@ if(empty($_POST['employeeInput'])){
     $successQuery = mysqli_query($conn, $query2);
 
     if(!$successQuery){
-        //echo mysqli_error($conn);
-        header("Location: ../public/people/insertPeople.php?insertion=failed");
+        header("Location: ../public/people/insertPerson.php?insertion=failed");
     }else{
-        //echo "succes normal person";
         header("Location: ../public/people/people.php?insertion=success");
     }
 
@@ -65,7 +63,6 @@ if(empty($_POST['employeeInput'])){
     $successQuery2 = mysqli_query($conn, $query2); 
     $successQuery3 = mysqli_query($conn, $query3);
     if(!$successQuery2 ||  !$successQuery3){
-        //echo mysqli_error($conn);
         header("Location: ../public/people/insertPerson.php?insertion=failed");
         
     }else{

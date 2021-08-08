@@ -1,6 +1,13 @@
 <?php
 include_once '../templates/header.php';
 include_once '../../config/db.php';
+
+if(isset($_GET['insertion'])){
+    if($_GET['insertion'] == 'failed'){
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert"> SSN already exists!</div>';
+        unset($_GET['insertion']);
+    }
+}
 ?>
 
 <html>

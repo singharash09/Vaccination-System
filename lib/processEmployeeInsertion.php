@@ -29,17 +29,14 @@ $employeeEndDate = $_POST['employeeEndDate'];
 
     if(!$successQuery1){
         echo mysqli_error($conn);
-        //header("Location: ../public/employees/insertEmployee.php?insertion=failed");
+        header("Location: ../public/employees/insertEmployee.php?insertion=failed");
     }else{
-        //echo "succes normal person";
         header("Location: ../public/employees/employees.php?insertion=success");
     }
 
     if(!$successQuery2){
-        echo mysqli_error($conn);
-       // header("Location: ../public/employees/insertEmployee.php?insertion=failed");
+       header("Location: ../public/employees/insertEmployee.php?insertion=failed");
     }else{
-        //echo "succes normal person";
         header("Location: ../public/employees/employees.php?insertion=success");
     }
 
