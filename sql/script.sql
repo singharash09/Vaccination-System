@@ -64,9 +64,10 @@ CREATE TABLE Infection (
 
 CREATE TABLE HealthCare_Worker(
     SSN CHAR(9),
-    EID CHAR(9) NOT NULL,
+    EID CHAR(9) NOT NULL ,
 
     FOREIGN KEY(SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
+    UNIQUE (EID),
     PRIMARY KEY(SSN)
     );
 
@@ -101,11 +102,13 @@ CREATE TABLE Works_At(
     SSN CHAR(9),
     facility_name VARCHAR(30),
     start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    end_date DATE ,
+    
     
     FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
+    
 );
 
 -- Manages relation
@@ -113,11 +116,12 @@ CREATE TABLE Manages(
     SSN CHAR(9),
     facility_name VARCHAR(30),
     start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
+    end_date DATE ,
     
     FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
+    
 );
 
 -- Relation Vaccination_Infomation
@@ -190,6 +194,7 @@ DROP TABLE Vaccination_Facility;
 DROP TABLE Vaccine_Type;
 DROP TABLE HealthCare_Worker;
 DROP TABLE Infection;
+DROP TABLE Infection_Type;
 DROP TABLE Person;
 DROP TABLE Postal_Code;
 DROP TABLE Province;
@@ -329,6 +334,7 @@ INSERT INTO Vaccine_Type  VALUES('Johnson & Johnson','SUSPENDED','2021-12-04', '
 INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
 INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 
+SELECT * FROM HealthCare_Worker;
 
 SELECT * FROM Inventory;
 INSERT INTO Transfers VALUES (null,'University Of Toronto','Olympic Stadium','Pfizer',20,'2021-08-06');
