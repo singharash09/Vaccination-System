@@ -26,9 +26,18 @@ $query1 = "UPDATE HealthCare_Worker
 SET EID='$employeeEID'
 WHERE SSN='$employeeSSN';";
 
+
+if(empty($_POST['employeeEndDate'] )){
+$query2 = "UPDATE Works_At
+SET facility_name='$employeeFacility', start_date='$employeeStartDate', end_date=NULL
+WHERE SSN='$employeeSSN';";
+
+}else{
 $query2 = "UPDATE Works_At
 SET facility_name='$employeeFacility', start_date='$employeeStartDate', end_date='$employeeEndDate'
 WHERE SSN='$employeeSSN';";
+}
+
 
 mysqli_query($conn, $query1);
 mysqli_query($conn, $query2);
