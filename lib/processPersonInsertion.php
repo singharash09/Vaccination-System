@@ -42,14 +42,18 @@ if(empty($_POST['employeeInput']) ||  empty($_POST['employeeFacility']) || empty
     $query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
     VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
     
-    mysqli_query($conn, $query1);
-    $successQuery = mysqli_query($conn, $query2);
+    $successQuery1 = mysqli_query($conn, $query1);
+    $successQuery2 = mysqli_query($conn, $query2);
 
-    if(!$successQuery){
-        header("Location: ../public/people/insertPerson.php?insertion=failed");
+    //error check
+    if(!$successQuery2){
+    header("Location: ../public/people/insertPerson.php?insertion=failed&type=SSN"); 
+    } else if(!$successQuery1){
+      header("Location: ../public/people/insertPerson.php?insertion=failed&type=Unexpected");       
     }else{
         header("Location: ../public/people/people.php?insertion=success");
     }
+
 
 } else{
     $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
@@ -57,21 +61,35 @@ if(empty($_POST['employeeInput']) ||  empty($_POST['employeeFacility']) || empty
     
     $query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
     VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
- 
+
     $query3 = "INSERT INTO HealthCare_Worker VALUES ('$personSSN', '$employeeInput');";
 
     $query4 = "INSERT INTO Works_At VALUES('$personSSN', '$employeeFacility','$employeeStartDate', NULL);";
 
     echo "inside the non empty employee";
 
-    mysqli_query($conn, $query1);
-    $successQuery2 = mysqli_query($conn, $query2); 
+    $successQuery1 = mysqli_query($conn, $query1);
+
+
+    $successQuery2 = mysqli_query($conn, $query2);
+
     $successQuery3 = mysqli_query($conn, $query3);
     $successQuery4 = mysqli_query($conn, $query4);
-    if(!$successQuery2 ||  !$successQuery3 ||  !$successQuery4){
-        header("Location: ../public/people/insertPerson.php?insertion=failed");
-    }else{
-        header("Location: ../public/people/people.php?insertion=success");
+
+    if(!$successQuery1){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=Unexpected");           
+    }else if(!$successQuery2){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=SSN"); 
+    } else  if(!$successQuery3){
+        $subQuery3 = "DELETE FROM Person WHERE SSN='$personSSN';";
+        mysqli_query($conn, $subQuery3);
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=EID");           
+    } else if(!$successQuery4){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=EID");         
+    } else{
+        header("Location: ../public/people/people.php?insertion=success");   
     }
+
+
 }
 ?>

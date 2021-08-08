@@ -3,35 +3,43 @@ include_once '../templates/header.php';
 include_once '../../config/db.php';
 
 if(isset($_GET['insertion'])){
+
     if($_GET['insertion'] == 'failed'){
+        $message = '';
+        if(isset($_GET['type'])){
+            if($_GET['type'] == 'SSN'){
+                $message = "Duplicate SSN!";
+            }else if($_GET['type'] == 'EID'){
+                $message = "Duplicate Employee ID!";
+            }else if($_GET['type'] == 'Unexpected'){
+                $message = "Unexpected error";
+            }
+        }
+
         echo "<script type='text/javascript'>
             $(window).on('load',function(){ 
             $('#Modal').modal('show');
             });
              </script>";
 
-             echo'<!-- Button trigger modal -->
-             
-             
-             <!-- Modal -->
-             <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
-               <div class="modal-dialog">
-                 <div class="modal-content">
-                   <div class="modal-header">
-                     <h5 class="modal-title" id="modalLabel">Unable to insert</h5>
-                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                   </div>
-                   <div class="modal-body">
-                     SSN already exists!
-                   </div>
-                   <div class="modal-footer">
-                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                     
-                   </div>
+            
+        echo'<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+             <div class="modal-dialog">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="modalLabel">Unable to insert</h5>
+                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                 </div>
+                 <div class="modal-body">'.$message.'
+                 </div>
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>      
                  </div>
                </div>
-             </div>';
+             </div>
+           </div>';
         unset($_GET['insertion']);
+        unset($_GET['type']);
     }
 }
 ?>
