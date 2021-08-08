@@ -27,18 +27,15 @@ $employeeEndDate = $_POST['employeeEndDate'];
     $successQuery1 = mysqli_query($conn, $query1);
     $successQuery2 = mysqli_query($conn, $query2);
 
-    if(!$successQuery1){
-        echo mysqli_error($conn);
+    
+    if(!$successQuery1 ||  !$successQuery2){
         header("Location: ../public/employees/insertEmployee.php?insertion=failed");
+        
     }else{
         header("Location: ../public/employees/employees.php?insertion=success");
     }
 
-    if(!$successQuery2){
-       header("Location: ../public/employees/insertEmployee.php?insertion=failed");
-    }else{
-        header("Location: ../public/employees/employees.php?insertion=success");
-    }
+  
 
 
 ?>
