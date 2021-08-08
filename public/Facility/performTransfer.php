@@ -1,6 +1,43 @@
 <?php
 include_once '../templates/header.php';
 include_once '../../config/db.php';
+
+if(isset($_GET['insertion'])){
+
+  if($_GET['insertion'] == 'failed'){
+      $message = '';
+      if(isset($_GET['type'])){
+          if($_GET['type'] == 'Amount'){
+              $message = "Insufficient Amount of Vaccines in the Sending Facility";
+          }
+      }
+
+      echo "<script type='text/javascript'>
+          $(window).on('load',function(){ 
+          $('#Modal').modal('show');
+          });
+           </script>";
+
+          
+      echo'<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="modalLabel">Unable to insert</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">'.$message.'
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>      
+               </div>
+             </div>
+           </div>
+         </div>';
+      unset($_GET['insertion']);
+      unset($_GET['type']);
+  }
+}
 ?>
 
 <html>
@@ -21,7 +58,7 @@ include_once '../../config/db.php';
                               <select class="form-select" name="transfersFacilityOUT" id="transfersFacilityOUT" aria-label="Select Facility">
                                 <option>Select</option>
                                   <?php
-                                  $query1 = "SELECT facility_name FROM Vaccination_Facility;";
+                                  $query1 = "SELECT DISTINCT Vaccination_Facility.facility_name FROM Vaccination_Facility,Inventory WHERE Vaccination_Facility.facility_name = Inventory.facility_name ;";
                                   $result = mysqli_query($conn, $query1);
                                   $resultCheck = mysqli_num_rows($result);
                                   if($resultCheck>0){

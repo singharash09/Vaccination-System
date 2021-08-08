@@ -220,7 +220,9 @@ BEFORE INSERT ON Transfers FOR EACH ROW
 		
         
 			IF ((((SELECT Inventory.number_of_vaccines FROM Inventory WHERE (Inventory.facility_name = New.transfer_out) AND (Inventory.type_name = New.vaccine_type)) >= New.number_of_vaccines)) AND 
-            (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_in AND type_name = NEW.vaccine_type)))
+            (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_in AND type_name = NEW.vaccine_type)) AND 
+            (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_out AND type_name = NEW.vaccine_type)))
+            
 			THEN
 				UPDATE Inventory
 				SET Inventory.number_of_vaccines = Inventory.number_of_vaccines + New.number_of_vaccines 
@@ -229,8 +231,12 @@ BEFORE INSERT ON Transfers FOR EACH ROW
 				UPDATE Inventory
 				SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
 				WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
-            ELSE 
-				INSERT INTO Inventory VALUES (NEW.transfer_in, NEW.number_of_vaccines, NEW.vaccine_type);
+                
+            ELSEIF(((NOT EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_in AND type_name = NEW.vaccine_type))) AND 
+            (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_out AND type_name = NEW.vaccine_type))) THEN
+				
+                INSERT INTO Inventory VALUES (NEW.transfer_in, NEW.number_of_vaccines, NEW.vaccine_type);
+            
 		END IF;
 		
 	END//
