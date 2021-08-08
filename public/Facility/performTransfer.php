@@ -85,12 +85,12 @@ if(isset($_GET['insertion'])){
                                   ?>
                                 </select>
                           </div>
-                            <div class="col-sm-6">  
+                            <div class="col-sm-4">  
                             <label for="transfersVaccineType" class="form-label">Vaccine type</label>
                               <select class="form-select" name="transfersVaccineType" id="transfersVaccineType" aria-label="Select Type">
                                 <option>Select</option>
                                   <?php
-                                  $query2 = "SELECT type_name FROM Vaccine_Type WHERE status='SAFE';";
+                                  $query2 = "SELECT type_name FROM Vaccine_Type WHERE status='SAFE';";                                 
                                   $result = mysqli_query($conn, $query2);
                                   $resultCheck = mysqli_num_rows($result);
                                   if($resultCheck>0){
@@ -101,13 +101,13 @@ if(isset($_GET['insertion'])){
                                   ?>
                                 </select>                        
                             </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                               <label for="transfersNumberOfVaccines" class="form-label">Quantity</label>
-                              <input type="number" class="form-control" id="transfersNumberOfVaccines"  name="transfersNumberOfVaccines" placeholder="250" required>
+                              <input type="number" class="form-control" id="transfersNumberOfVaccines"  name="transfersNumberOfVaccines" placeholder="250" min="0" oninput="validity.valid||(value='');" required>
                           </div>  
-                           <div class="col-sm-6">
+                           <div class="col-sm-4">
                               <label for="transfersDateOfTransfer" class="form-label">Date of Transfer</label>
-                              <input type="date" class="form-control" id="transfersDateOfTransfer" name="transfersDateOfTransfer" required>                           
+                              <input type="date" class="form-control" id="transfersDateOfTransfer" name="transfersDateOfTransfer"  min="<?php echo date('Y-m-d'); ?>" required>                           
                           </div>                         
 
                          <div class="col-sm-6"> 
@@ -121,3 +121,5 @@ if(isset($_GET['insertion'])){
                </div>
             </div>           
         </div>
+      </body>
+</html>
