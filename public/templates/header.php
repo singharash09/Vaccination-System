@@ -31,7 +31,7 @@
                     <a class="nav-link" aria-current="page" href="/COMP353/public/vaccination/vaccination.php"><i class="fas fa-syringe"></i>  Vaccinations</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/COMP353/public/index.php"><i class="fas fa-book"></i>  Reports</a>
+                    <a class="nav-link" aria-current="page" href="/COMP353/public/index.php"><i class="fas fa-tachometer-alt"></i>  Dashboard</a>
                 </li>               
                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="/COMP353/public/Facility/Facility.php"><i class="fas fa-hospital-alt"></i>  Facilities</a>
