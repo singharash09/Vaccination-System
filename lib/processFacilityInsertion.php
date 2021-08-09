@@ -28,10 +28,17 @@ ON DUPLICATE KEY UPDATE city='$facilityCity', province_code='$facilityProvince';
 $query2 = "INSERT INTO Vaccination_Facility(facility_name, facility_type, web_address, phone_number,address, postal_code)
 VALUES('$facilityName', '$facilityType', '$facilityWebAdress', '$facilityPhoneNumber', '$facilityAddress ', '$facilityPostalCode');";
 
-mysqli_query($conn, $query1);
-mysqli_query($conn, $query2);
+$successQuery1 = mysqli_query($conn, $query1);
+$successQuery2 = mysqli_query($conn, $query2);
 
 
-header("Location: ../public/facility/Facility.php?insertion=success")
+if(!$successQuery1){
+header("Location: ../public/Facility/insertFacility.php?insertion=failed&type=Unexpected");
+}else if (!$successQuery2){
+header("Location: ../public/Facility/insertFacility.php?insertion=failed&type=name");
+}else{
+header("Location: ../public/facility/Facility.php?insertion=success");
+}
+
 
 ?>

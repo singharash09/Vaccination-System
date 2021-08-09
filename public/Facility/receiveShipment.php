@@ -51,7 +51,7 @@ include_once '../../config/db.php';
                             </div>
                         <div class="col-sm-6">
                               <label for="shipmentQuantity" class="form-label">Quantity</label>
-                              <input type="number" class="form-control" id="shipmentQuantity"  name="shipmentQuantity" placeholder="250" required>
+                              <input type="number" class="form-control" id="shipmentQuantity"  name="shipmentQuantity" placeholder="250"  min="0" oninput="validity.valid||(value='');" required>
                           </div>  
                            <div class="col-sm-6">
                               <label for="shipmentDate" class="form-label">Date</label>
