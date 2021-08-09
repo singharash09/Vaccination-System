@@ -14,7 +14,9 @@ $personAddress = $_POST['personAddress'];
 $personCity = $_POST['personCity'];
 $personProvince = $_POST['personProvince'];
 $personPostalCode= $_POST['personPostalCode'];
-
+$employeeInput = $_POST['employeeInput'];
+$employeeFacility = $_POST['employeeFacility'];
+$employeeStartDate = $_POST['employeeStartDate'];
 
 // echo "SSN: " . $personSSN . "\n";
 // echo "medicare: ". $personMedicare . "\n";
@@ -27,17 +29,67 @@ $personPostalCode= $_POST['personPostalCode'];
 // echo "CITIZENSHIP: " . $personCitizenship . "\n";
 // echo "ADDRESS: " . $personAddress . "\n";
 // echo "POSTAL CODE: ". $personPostalCode . "\n";
+// echo "employee eid: ".$employeeEID."\n";
+// echo "employee facility: ".$employeeFacility."\n";
+// echo "employee start date: ".$employeeStartDate."\n";
+
+if(empty($_POST['employeeInput']) ||  empty($_POST['employeeFacility']) || empty($_POST['employeeStartDate'])){
+
+    echo "inside the empty emloyee";
+    $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
+    ON DUPLICATE KEY UPDATE city='$personCity', province_code='$personProvince';";
+    
+    $query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
+    VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
+    
+    $successQuery1 = mysqli_query($conn, $query1);
+    $successQuery2 = mysqli_query($conn, $query2);
+
+    //error check
+    if(!$successQuery2){
+    header("Location: ../public/people/insertPerson.php?insertion=failed&type=SSN"); 
+    } else if(!$successQuery1){
+      header("Location: ../public/people/insertPerson.php?insertion=failed&type=Unexpected");       
+    }else{
+        header("Location: ../public/people/people.php?insertion=success");
+    }
 
 
-$query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
-ON DUPLICATE KEY UPDATE city='$personCity', province_code='$personProvince';";
+} else{
+    $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
+    ON DUPLICATE KEY UPDATE city='$personCity', province_code='$personProvince';";
+    
+    $query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
+    VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
 
-$query2 = "INSERT INTO Person (SSN, medicare, first_name, last_name, date_of_birth, email_address, telephone_number, citizenship, address, postal_code)
-VALUES('$personSSN', '$personMedicare', '$personFname', '$personLname', '$personDOB', '$personEmail', '$personPhoneNumber', '$personCitizenship', '$personAddress', '$personPostalCode');";
+    $query3 = "INSERT INTO HealthCare_Worker VALUES ('$personSSN', '$employeeInput');";
 
-mysqli_query($conn, $query1);
-mysqli_query($conn, $query2);
+    $query4 = "INSERT INTO Works_At VALUES('$personSSN', '$employeeFacility','$employeeStartDate', NULL);";
 
-header("Location: ../public/people/people.php?insertion=success")
+    echo "inside the non empty employee";
 
+    $successQuery1 = mysqli_query($conn, $query1);
+
+
+    $successQuery2 = mysqli_query($conn, $query2);
+
+    $successQuery3 = mysqli_query($conn, $query3);
+    $successQuery4 = mysqli_query($conn, $query4);
+
+    if(!$successQuery1){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=Unexpected");           
+    }else if(!$successQuery2){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=SSN"); 
+    } else  if(!$successQuery3){
+        $subQuery3 = "DELETE FROM Person WHERE SSN='$personSSN';";
+        mysqli_query($conn, $subQuery3);
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=EID");           
+    } else if(!$successQuery4){
+        header("Location: ../public/people/insertPerson.php?insertion=failed&type=EID");         
+    } else{
+        header("Location: ../public/people/people.php?insertion=success");   
+    }
+
+
+}
 ?>

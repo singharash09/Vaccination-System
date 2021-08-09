@@ -19,6 +19,7 @@ include_once '../../config/db.php';
             <div class="row">
 
             </div>
+        <div style="height: 600px;overflow: scroll;">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -66,6 +67,7 @@ include_once '../../config/db.php';
                 ?>
             </tbody>
         </table>
+        </div>
     </body>
         </div>
 </html>

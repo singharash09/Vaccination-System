@@ -1,6 +1,43 @@
 <?php
 include_once '../templates/header.php';
 include_once '../../config/db.php';
+
+if(isset($_GET['insertion'])){
+
+  if($_GET['insertion'] == 'failed'){
+      $message = '';
+      if(isset($_GET['type'])){
+          if($_GET['type'] == 'Amount'){
+              $message = "Insufficient Amount of Vaccines or type not available in the Sending Facility ";
+          }
+      }
+
+      echo "<script type='text/javascript'>
+          $(window).on('load',function(){ 
+          $('#Modal').modal('show');
+          });
+           </script>";
+
+          
+      echo'<div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="Modal" aria-hidden="true">
+           <div class="modal-dialog">
+             <div class="modal-content">
+               <div class="modal-header">
+                 <h5 class="modal-title" id="modalLabel">Unable to insert</h5>
+                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+               </div>
+               <div class="modal-body">'.$message.'
+               </div>
+               <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>      
+               </div>
+             </div>
+           </div>
+         </div>';
+      unset($_GET['insertion']);
+      unset($_GET['type']);
+  }
+}
 ?>
 
 <html>
@@ -21,7 +58,7 @@ include_once '../../config/db.php';
                               <select class="form-select" name="transfersFacilityOUT" id="transfersFacilityOUT" aria-label="Select Facility">
                                 <option>Select</option>
                                   <?php
-                                  $query1 = "SELECT facility_name FROM Vaccination_Facility;";
+                                  $query1 = "SELECT DISTINCT Vaccination_Facility.facility_name FROM Vaccination_Facility,Inventory WHERE Vaccination_Facility.facility_name = Inventory.facility_name ;";
                                   $result = mysqli_query($conn, $query1);
                                   $resultCheck = mysqli_num_rows($result);
                                   if($resultCheck>0){
@@ -48,12 +85,12 @@ include_once '../../config/db.php';
                                   ?>
                                 </select>
                           </div>
-                            <div class="col-sm-6">  
+                            <div class="col-sm-4">  
                             <label for="transfersVaccineType" class="form-label">Vaccine type</label>
                               <select class="form-select" name="transfersVaccineType" id="transfersVaccineType" aria-label="Select Type">
                                 <option>Select</option>
                                   <?php
-                                  $query2 = "SELECT type_name FROM Vaccine_Type WHERE status='SAFE';";
+                                  $query2 = "SELECT type_name FROM Vaccine_Type WHERE status='SAFE';";                                 
                                   $result = mysqli_query($conn, $query2);
                                   $resultCheck = mysqli_num_rows($result);
                                   if($resultCheck>0){
@@ -64,13 +101,13 @@ include_once '../../config/db.php';
                                   ?>
                                 </select>                        
                             </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-4">
                               <label for="transfersNumberOfVaccines" class="form-label">Quantity</label>
-                              <input type="number" class="form-control" id="transfersNumberOfVaccines"  name="transfersNumberOfVaccines" placeholder="250" required>
+                              <input type="number" class="form-control" id="transfersNumberOfVaccines"  name="transfersNumberOfVaccines" placeholder="250" min="0" oninput="validity.valid||(value='');" required>
                           </div>  
-                           <div class="col-sm-6">
+                           <div class="col-sm-4">
                               <label for="transfersDateOfTransfer" class="form-label">Date of Transfer</label>
-                              <input type="date" class="form-control" id="transfersDateOfTransfer" name="transfersDateOfTransfer" required>                           
+                              <input type="date" class="form-control" id="transfersDateOfTransfer" name="transfersDateOfTransfer"  min="<?php echo date('Y-m-d'); ?>" required>                           
                           </div>                         
 
                          <div class="col-sm-6"> 
@@ -84,3 +121,5 @@ include_once '../../config/db.php';
                </div>
             </div>           
         </div>
+      </body>
+</html>

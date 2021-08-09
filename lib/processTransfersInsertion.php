@@ -21,10 +21,13 @@ echo "DATE OF TRANSFER: ". $transfersDateOfTransfer. "\n";
 $query ="INSERT INTO Transfers VALUES (null,'$transfersFacilityIN','$transfersFacilityOUT','$transfersVaccineType',$transfersNumberOfVaccines,'$transfersDateOfTransfer');";
 
 
-mysqli_query($conn, $query);
+$successQuery = mysqli_query($conn, $query);
 
+if(!$successQuery){
+    header("Location: ../public/facility/performTransfer.php?insertion=failed&type=Amount"); 
+    } else{
+        header("Location: ../public/facility/Facility.php?transfer=success");
+    }
 
-
-header("Location: ../public/facility/Facility.php?transfer=success");
 
 ?>
