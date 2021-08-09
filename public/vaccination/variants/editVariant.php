@@ -26,13 +26,6 @@ include_once '../../../config/db.php';
                <div class="card">
                    <div class="card-body">
                        <form class="row g-3" style="text-align: left;" action="../../../lib/processVariantEdit.php?variantToEdit=<?php echo $variantToEdit ?>" method="POST">
-                       
-                       <?php
-                       $query = "SELECT*FROM Infection_Type WHERE Infection_Type.type_of_infection ='$variantToEdit';";
-                       $result = mysqli_query($conn, $query);
-                       $resultCheck = mysqli_num_rows($result);                     
-                      
-                       ?>
                         <div class="mb-3">
                               <label for="type_of_infection" class="form-label">Variant Name</label>
                               <input type="text" value="<?php echo $variantToEdit?>" class="form-control" id="type_of_infection" name="type_of_infection" required>
