@@ -3,8 +3,6 @@ include_once '../config/db.php';
 
 $type_of_infection = $_POST['type_of_infection'];
 
-echo "Variant Name: " . $type_of_infection. "\n";
-
 $query ="INSERT INTO Infection_Type VALUES ('$type_of_infection');";
 
 mysqli_query($conn, $query);
