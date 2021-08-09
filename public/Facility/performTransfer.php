@@ -8,7 +8,7 @@ if(isset($_GET['insertion'])){
       $message = '';
       if(isset($_GET['type'])){
           if($_GET['type'] == 'Amount'){
-              $message = "Insufficient Amount of Vaccines in the Sending Facility";
+              $message = "Insufficient Amount of Vaccines or type not available in the Sending Facility ";
           }
       }
 
