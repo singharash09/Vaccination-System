@@ -4,11 +4,6 @@ include_once '../../../config/db.php';
 ?>
 
 <html>
-
-<head>
-
-</head>
-
 <body>
     <div class="container">
         <div class="row">
@@ -43,15 +38,15 @@ include_once '../../../config/db.php';
                         </div>
                         <div class="col-sm">
                             <label for="eligible_group_id" class="form-label">Eligible Group</label>
-                            <select class="form-select" id="eligible_group_id" name="eligible_group_id" aria-label="Select Type" required> 
+                            <select class="form-select" id="eligible_group_id" name="eligible_group_id" aria-label="Select Type" required>
                                 <?php
-                                    for ($x = 0; $x <= 10; $x++) {
-                                        if($x == $editGroup){
-                                            echo '<option value='.$x.' selected>'.$x.'</option>';
-                                        }else{
-                                            echo '<option value='.$x.'>'.$x.'</option>';
-                                        }
+                                for ($x = 0; $x <= 10; $x++) {
+                                    if ($x == $editGroup) {
+                                        echo '<option value=' . $x . ' selected>' . $x . '</option>';
+                                    } else {
+                                        echo '<option value=' . $x . '>' . $x . '</option>';
                                     }
+                                }
                                 ?>
                             </select>
                         </div>
