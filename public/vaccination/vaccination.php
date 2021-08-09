@@ -20,7 +20,7 @@ include_once '../templates/header.php';
             
             <div class="row text-center cell">
                 <div class="col-lg-2 cell">
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;  padding: 1vw;font-weight: bolder;">
+                    <a href="performVaccination/performVaccination.php" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;  padding: 1vw;font-weight: bolder;">
                     <i class="fas fa-table  fa-5x"></i></br></br>
                     &nbsp;&nbsp;Vaccinations&nbsp;&nbsp;
                     </a>   

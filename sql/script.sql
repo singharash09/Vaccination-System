@@ -350,11 +350,14 @@ INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
 INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 
 SELECT * FROM HealthCare_Worker;
+
 INSERT INTO Vaccination VALUES (null,'555555555','Olympic Stadium','Pfizer',2,'2021-09-08','111111111');
 INSERT INTO Vaccination VALUES (null,'555555555','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
 INSERT INTO Vaccination VALUES (null,'222222222','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
        INSERT INTO Vaccination VALUES (null,'575003660','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
      SELECt * FROM Vaccination; 
+
+
 SELECT * FROM Inventory;
 INSERT INTO Transfers VALUES (null,'University Of Toronto','Olympic Stadium','Pfizer',20,'2021-08-06');
 SELECT * FROM Vaccination_Facility;
