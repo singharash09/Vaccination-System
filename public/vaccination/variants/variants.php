@@ -42,7 +42,7 @@ include_once '../../../config/db.php';
                         echo 
                         '<tr><th scope="row">'.$row['type_of_infection'].'</th>
                         <td>'.$row['total'].'</td>
-                        <td><a href="../../lib/processVariantDeletion.php?personToDelete='.$row['type_of_infection'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
+                        <td><a href="../../../lib/processVariantDeletion.php?variantToDelete='.$row['type_of_infection'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
                         <td><a href="editVariant.php?variantEditType='.$row['type_of_infection'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-edit"></i></a></td>
                         </tr>';
                     }

@@ -58,7 +58,7 @@ CREATE TABLE Infection (
     type_of_infection VARCHAR(30),
     
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
-    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection),
+    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection) ON DELETE CASCADE,
     PRIMARY KEY(SSN, date_of_infection)
 );
 
