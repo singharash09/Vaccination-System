@@ -25,7 +25,7 @@ include_once '../../../config/db.php';
             <div class="row" style="text-align: center;">
                <div class="card">
                    <div class="card-body">
-                       <form class="row g-3" style="text-align: left;" action="../../lib/processPersonEdit.php" method="POST">
+                       <form class="row g-3" style="text-align: left;" action="../../../lib/processVariantEdit.php?variantToEdit=<?php echo $variantToEdit ?>" method="POST">
                        
                        <?php
                        $query = "SELECT*FROM Infection_Type WHERE Infection_Type.type_of_infection ='$variantToEdit';";

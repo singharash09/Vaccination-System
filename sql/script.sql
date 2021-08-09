@@ -58,7 +58,7 @@ CREATE TABLE Infection (
     type_of_infection VARCHAR(30),
     
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
-    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection) ON DELETE CASCADE,
+    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY(SSN, date_of_infection)
 );
 
@@ -264,7 +264,7 @@ DELIMITER ;
 DROP TRIGGER Vaccination_update;
 
 -- Query 12
-SELECT first_name, last_name, date_of_birth, email_address, telephone_number, city, date_of_vaccination, type_name, IF(COUNT(date_of_infection)> 0 , "YES", "NO") AS 'Previously Infected ?'
+SELECT first_name, last_name, date_of_birth, email_address, telephone_number, city, date_of_vaccination, type_name, IF(COUNT(date_of_infection)> 0 , "YES", "NO") AS "Previously Infected ?"
 FROM Person, Postal_Code, Vaccination, Infection
 WHERE 
 Person.SSN = Vaccination.SSN AND
