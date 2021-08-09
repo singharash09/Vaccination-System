@@ -57,7 +57,7 @@ include_once '../../../config/db.php';
                               <input type="text" value="<?php echo  $editEmployeeSSN?>" class="form-control" id="employeeSSN" name="employeeSSN" minlength="9" maxlength="9">
                           </div>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-3">
                             <label for="facilityName" class="form-label">Facility Name</label>
                               <select class="form-select" name="facilityName" id="facilityName" aria-label="Select Type" required>
                                 <option>Select</option>
@@ -79,7 +79,7 @@ include_once '../../../config/db.php';
                           </div>   
 
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-3">
                             <label for="typeName" class="form-label">Type Name</label>
                               <select class="form-select" name="typeName" id="typeName" aria-label="Select Type" required>
                                 <option>Select</option>
@@ -101,15 +101,15 @@ include_once '../../../config/db.php';
                           </div>   
 
 
-                          <div class="col-sm-3">
-                              <label for="doseNumber" class="form-label">Dose Number</label>
-                              <input type="number" value="<?php echo  $editDoseNumber?>" class="form-control" id="doseNumber" name="doseNumber" min="0" required>
-                          </div>   
-
-                          <div class="col-sm-6">
+                          <div class="col-sm-4">
                               <label for="vaccinationDate" class="form-label">Vaccination Date</label>
                               <input type="date" value="<?php echo  $editVaccinationDate?>" class="form-control" id="vaccinationDate" name="vaccinationDate" required>                           
-                          </div>                    
+                          </div>      
+
+                          <div class="col-sm-2">
+                              <label for="doseNumber" class="form-label">Dose Number</label>
+                              <input type="number" value="<?php echo  $editDoseNumber?>" class="form-control" id="doseNumber" name="doseNumber" min="0" required>
+                          </div>                 
                           <div>
                              <button class="btn btn-secondary" type="submit">Update</button>
                           </div>

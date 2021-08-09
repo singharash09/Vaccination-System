@@ -11,7 +11,7 @@ include_once '../../../config/db.php';
     <body>
         <div class="container">
             <div class="row top-buffer">
-                <div class="col-sm-9"><h1 class="page-title"> <i class="fas fa-users"></i> Vaccinations</h1></div>
+                <div class="col-sm-9"><h1 class="page-title"><i class="fas fa-syringe"></i> Vaccinations</h1></div>
                 <div class="col-sm-3" style="text-align: right;">
                     <a href="insertVaccination.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Perform Vaccination</a>
                 </div>
@@ -28,7 +28,9 @@ include_once '../../../config/db.php';
                     <th scope="col-md">Facility Name</th>
                     <th scope="col-md">Type Name</th>
                     <th scope="col-md">Dose Number</th>
-                    <th scope="col-md">Date Of Vaccination</th>              
+                    <th scope="col-md">Date Of Vaccination</th>    
+                    <th scope="col-md"></th> 
+                    <th scope="col-md"></th>               
                 </tr>
             </thead>
             <tbody>
