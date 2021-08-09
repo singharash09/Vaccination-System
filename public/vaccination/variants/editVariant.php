@@ -31,11 +31,7 @@ include_once '../../../config/db.php';
                        $query = "SELECT*FROM Infection_Type WHERE Infection_Type.type_of_infection ='$variantToEdit';";
                        $result = mysqli_query($conn, $query);
                        $resultCheck = mysqli_num_rows($result);                     
-                       if($resultCheck>0){
-                           while($row = mysqli_fetch_assoc($result)){
-                               $editVariant = $row['type_of_infection'];
-                           }
-                       }
+                      
                        ?>
                         <div class="mb-3">
                               <label for="type_of_infection" class="form-label">Variant Name</label>
