@@ -15,7 +15,7 @@ CREATE TABLE Province(
 	province_code CHAR(2) NOT NULL,
 	eligible_group_id INTEGER NOT NULL,
     
-    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
+    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (province_code)
 );
 
@@ -24,7 +24,7 @@ CREATE TABLE Postal_Code (
 	city VARCHAR(30) NOT NULL,
 	province_code CHAR(2) NOT NULL,
 	
-    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE,
+    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE ON UPDATE CASCADE,
     PRIMARY KEY (postal_code)
 );
 
