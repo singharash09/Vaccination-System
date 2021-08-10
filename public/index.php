@@ -157,12 +157,12 @@
                            </thead>
                            <tbody>
                               <?php
-                                 $query = "select PC.province_code, I.type_name, I.number_of_vaccines
+                                 $query = "select PC.province_code, I.type_name, SUM(I.number_of_vaccines) AS 'number_of_vaccines'
                                  from Inventory I
                                  inner join Vaccination_Facility as VF on I.facility_name = VF.facility_name
                                  inner join Postal_Code as PC on VF.postal_code = PC.postal_code
+                                 GROUP BY (type_name)
                                  order by PC.province_code asc, I.number_of_vaccines desc;";  
-
                                  $result = mysqli_query($conn, $query);
                                  $resultCheck = mysqli_num_rows($result);
                                  if($resultCheck>0){

@@ -36,7 +36,8 @@ include_once '../../config/db.php';
                     <th scope="col-md">Province</th>
                     <th scope="col-md">Postal Code</th>
                     <th scope="col-sm"></th>
-                    <th scope="col-sm"></th>                    
+                    <th scope="col-sm"></th>  
+                    <th scope="col-sm"></th>                                         
                 </tr>
             </thead>
             <tbody>
@@ -61,6 +62,7 @@ include_once '../../config/db.php';
                         <td>'.$row['postal_code'].'</td>
                         <td><a href="../../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
                         <td><a href="editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="personInfo.php?personInfoSSN='.$row['SSN'].'" type="button" class="btn  btn-warning button-style"><i class="fas fa-info-circle"></i>  </a></td>
                         </tr>';
                     }
                 }

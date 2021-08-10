@@ -48,7 +48,13 @@ include_once '../templates/header.php';
                     <i class="fas fa-viruses fa-5x"></i></br></br>
                     &nbsp;&nbsp;&nbsp;&nbsp;Variants&nbsp;&nbsp;&nbsp;&nbsp;
                     </a> 
-                     </div>       
+                    </div>  
+                   <div class="col-lg-2 cell">                   
+                    <a href="infection/infection.php" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px; padding: 1vw; font-weight: bolder;">
+                    <i class="fas fa-disease fa-5x"></i></br></br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;Infection&nbsp;&nbsp;&nbsp;&nbsp;
+                    </a> 
+                   </div>                        
             </div>
         </div>
     </body>
