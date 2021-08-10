@@ -1,6 +1,6 @@
 <?php
-include_once '../templates/header.php';
-include_once '../../config/db.php';
+include_once '../../templates/header.php';
+include_once '../../../config/db.php';
 
 /*if(isset($_GET['insertion'])){
 
@@ -23,7 +23,7 @@ include_once '../../config/db.php';
 ?>
 <html>
     <head>
-        <script type="text/javascript" src="../js/script.js"> </script>
+        
     </head>
     <body>
         <div class="container">
@@ -33,19 +33,22 @@ include_once '../../config/db.php';
             <div class="row" style="text-align: center;">
                <div class="card">
                    <div class="card-body">
-                       <form class="row g-3" style="text-align: left;" action="../../lib/processAgeGroupInsertion.php" method="POST">
+                       <form class="row g-3" style="text-align: left;" action="../../../lib/processAgeGroupInsertion.php" method="POST">
                           <div class="col-sm-3">
                               <label for="group_id" class="form-label">Group number</label>
-                              <input type="number" class="form-control" id="group_id" name="group_id" placeholder="1 " required>
+                              <input type="number" class="form-control" id="group_id" name="group_id" min="1" placeholder="1 " required>
                           </div>
                           <div class="col-sm-3">
                               <label for="min_age" class="form-label">Minimum age</label>
-                              <input type="number" class="form-control" id="min_age" name="min_age"  placeholder="1" required>
+                              <input type="number" class="form-control" id="min_age" name="min_age"  min="0" placeholder="1" required>
                           </div>
                           <div class="col-sm-3">
                               <label for="max_age" class="form-label">Maximum Age</label>
-                              <input type="number" class="form-control" name="max_age" id="max_age"  placeholder="1" required>                        
+                              <input type="number" class="form-control" name="max_age" id="max_age"  min="0" placeholder="1" required>                        
                           </div>
+                          <div>
+                            <button class="btn btn-success" type="submit">Add Age Group</button>
+                        </div>
                                  
                                                                  
                        </form>

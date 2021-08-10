@@ -1,11 +1,10 @@
 <?php
-include_once '../templates/header.php';
-include_once '../../config/db.php';
+include_once '../../templates/header.php';
+include_once '../../../config/db.php';
 ?>
 <html>
     <head>
         <link rel="stylesheet" href="../css/styles.css">
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     </head>
 
     <body>
@@ -42,8 +41,8 @@ include_once '../../config/db.php';
                         echo '<tr><th scope="row">'.$row['group_id'].'</th>
                         <td>'.$row['min_age'].'</td>
                         <td>'.$row['max_age'].'</td>
-                        <td><a href="../../lib/processAgeGroupDeletion.php?ageGroupToDelete='.$row['group_id'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
-                        <td><a href="editAgeGroup.php?ageGroupEditID='.$row['group_ID'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
+                        <td><a href="../../../lib/processAgeGroupDeletion.php?ageGroupToDelete='.$row['group_id'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-times"></i></a></td>
+                        <td><a href="editAgeGroup.php?ageGroupEditID='.$row['group_id'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
                         </tr>';
                     }
                 }
