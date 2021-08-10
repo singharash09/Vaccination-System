@@ -27,13 +27,8 @@ include_once '../../config/db.php';
                     <th scope="col-md">First Name</th>
                     <th scope="col-md">Last Name</th>
                     <th scope="col-md">DOB</th>
-                    <th scope="col-md">Email</th>
-                    <th scope="col-md">Phone</th>
                     <th scope="col-md">Citizenship</th>
-                    <th scope="col-md">Address</th>
-                    <th scope="col-md">City</th>
                     <th scope="col-md">Province</th>
-                    <th scope="col-md">Postal Code</th>
                     <th scope="col-sm"></th>
                     <th scope="col-sm"></th>  
                     <th scope="col-sm"></th>                                         
@@ -52,13 +47,8 @@ include_once '../../config/db.php';
                         <td>'.$row['first_name'].'</td>
                         <td>'.$row['last_name'].'</td>
                         <td>'.$row['date_of_birth'].'</td>
-                        <td>'.$row['email_address'].'</td>
-                        <td>'.$row['telephone_number'].'</td>
                         <td>'.$row['citizenship'].'</td>
-                        <td>'.$row['address'].'</td>
-                        <td>'.$row['city'].'</td>
                         <td>'.$row['province_code'].'</td>
-                        <td>'.$row['postal_code'].'</td>
                         <td><a href="../../lib/processPersonDeletion.php?personToDelete='.$row['SSN'].'" type="button" class="btn btn-danger button-style"><i class="fas fa-user-times"></i></a></td>
                         <td><a href="editPerson.php?personEditSSN='.$row['SSN'].'" type="button" class="btn btn-secondary button-style"><i class="fas fa-user-edit"></i></a></td>
                         <td><a href="personInfo.php?personInfoSSN='.$row['SSN'].'" type="button" class="btn  btn-warning button-style"><i class="fas fa-info-circle"></i>  </a></td>
