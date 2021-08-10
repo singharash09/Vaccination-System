@@ -17,9 +17,9 @@ $query ="INSERT INTO Transfers VALUES (null,'$transfersFacilityIN','$transfersFa
 $successQuery = mysqli_query($conn, $query);
 
 if(!$successQuery){
-    header("Location: ../public/facility/performTransfer.php?insertion=failed&type=Amount"); 
+    header("Location: ../public/Facility/performTransfer.php?insertion=failed&type=Amount"); 
     } else{
-        header("Location: ../public/facility/Facility.php?transfer=success");
+        header("Location: ../public/Facility/Facility.php?transfer=success");
     }
 
 
