@@ -27,7 +27,7 @@ header("Location: ../public/Facility/insertFacility.php?insertion=failed&type=Un
 }else if (!$successQuery2){
 header("Location: ../public/Facility/insertFacility.php?insertion=failed&type=name");
 }else{
-header("Location: ../public/facility/Facility.php?insertion=success");
+header("Location: ../public/Facility/Facility.php?insertion=success");
 }
 
 
