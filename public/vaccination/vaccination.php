@@ -26,13 +26,13 @@ include_once '../templates/header.php';
                     </a>   
                  </div> 
                 <div class="col-lg-2 cell">
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;   padding: 1vw;font-weight: bolder;">
+                    <a href="vaccine/vaccine.php" class="btn btn-sq-lg btn-primary" style="display: inline-block; text-align: center; margin:10px;   padding: 1vw;font-weight: bolder;">
                     <i class="fas fa-flask fa-5x"></i></br></br>
                     Vaccine Types
                     </a>      
                 </div>
                    <div class="col-lg-2 cell">               
-                    <a href="#" class="btn btn-sq-lg btn-primary" style="display: inline-block;text-align: center; margin:10px;  padding: 1vw; font-weight: bolder;">
+                    <a href="/ageGroup/ageGroup.php" class="btn btn-sq-lg btn-primary" style="display: inline-block;text-align: center; margin:10px;  padding: 1vw; font-weight: bolder;">
                     <i class="fas fa-user-circle fa-5x"></i></br></br>
                     &nbsp;&nbsp;&nbsp;Age Group &nbsp;&nbsp;&nbsp;
                     </a>  
