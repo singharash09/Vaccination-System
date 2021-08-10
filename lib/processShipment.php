@@ -7,10 +7,6 @@ $shipmentQuantity = $_POST['shipmentQuantity'];
 $shipmentDate = $_POST['shipmentDate'];
 
 
-echo "FACILITY = " . $shipmentFacility;
-echo "Type = " . $shipmentType;
-echo "Quantity = " . $shipmentQuantity;
-echo "date = " . $shipmentDate;
 $query = "INSERT INTO Shipment VALUES (NULL, '$shipmentType', '$shipmentQuantity', '$shipmentDate', '$shipmentFacility');";
 
 mysqli_query($conn, $query);

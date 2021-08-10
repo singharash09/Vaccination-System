@@ -18,24 +18,9 @@ $employeeInput = $_POST['employeeInput'];
 $employeeFacility = $_POST['employeeFacility'];
 $employeeStartDate = $_POST['employeeStartDate'];
 
-// echo "SSN: " . $personSSN . "\n";
-// echo "medicare: ". $personMedicare . "\n";
-// echo "FNAME: " . $personFname . "\n";
-// echo "LNAME: " . $personLname . "\n";
-// echo "DOB: " . $personDOB . "\n";
-
-// echo "EMAIL: " . $personEmail . "\n";
-// echo "PHONE: " . $personPhoneNumber . "\n";
-// echo "CITIZENSHIP: " . $personCitizenship . "\n";
-// echo "ADDRESS: " . $personAddress . "\n";
-// echo "POSTAL CODE: ". $personPostalCode . "\n";
-// echo "employee eid: ".$employeeEID."\n";
-// echo "employee facility: ".$employeeFacility."\n";
-// echo "employee start date: ".$employeeStartDate."\n";
 
 if(empty($_POST['employeeInput']) ||  empty($_POST['employeeFacility']) || empty($_POST['employeeStartDate'])){
 
-    echo "inside the empty emloyee";
     $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 
     ON DUPLICATE KEY UPDATE city='$personCity', province_code='$personProvince';";
     
@@ -66,7 +51,6 @@ if(empty($_POST['employeeInput']) ||  empty($_POST['employeeFacility']) || empty
 
     $query4 = "INSERT INTO Works_At VALUES('$personSSN', '$employeeFacility','$employeeStartDate', NULL);";
 
-    echo "inside the non empty employee";
 
     $successQuery1 = mysqli_query($conn, $query1);
 

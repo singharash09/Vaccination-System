@@ -11,16 +11,6 @@ $facilityCity = $_POST['facilityCity'];
 $facilityProvince = $_POST['facilityProvince'];
 $facilityPostalCode= $_POST['facilityPostalCode'];
 
-echo "Name: " . $facilityName . "\n";
-echo "Type: ". $facilityType. "\n";
-echo "Web Adress: " . $facilityWebAdress . "\n";
-
-
-echo "PHONE: " . $facilityPhoneNumber. "\n";
-echo "ADDRESS: " . $facilityAddress. "\n";
-echo "POSTAL CODE: ". $facilityPostalCode . "\n";
-echo "facility city: ". $facilityCity . "\n";
-echo "facility province: ". $facilityProvince . "\n";
 
 $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$facilityPostalCode', '$facilityCity', '$facilityProvince') 
 ON DUPLICATE KEY UPDATE city='$facilityCity', province_code='$facilityProvince';";

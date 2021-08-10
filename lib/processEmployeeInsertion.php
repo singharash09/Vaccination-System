@@ -8,15 +8,6 @@ $employeeStartDate = $_POST['employeeStartDate'];
 $employeeEndDate = $_POST['employeeEndDate'];
 
 
-// echo "SSN: " . $employeeSSN. "\n";
-// echo "EID: ". $employeeEID . "\n";
-// echo "Facility Name:".$employeeFacility."\n";
-// echo "Start Date:".$employeeStartDate."\n";
-// echo "End Date:".$employeeEndDate."\n";
-
-
-
-
 if(empty($_POST['employeeEndDate'] )){
   
     $query1 = "INSERT INTO HealthCare_Worker VALUES('$employeeSSN', '$employeeEID');";
