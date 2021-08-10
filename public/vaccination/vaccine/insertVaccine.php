@@ -20,7 +20,7 @@ include_once '../../../config/db.php';
                         </div>
                         <div class="col-sm-6">
                             <label for="status" class="form-label">Vaccine Status</label>
-                            <select class="form-select" id="status" name="status" aria-label="Select Type" required>
+                            <select class="form-select" id="status" name="status" aria-label="Select Type" onchange='toggleSuspensionDate()' required>
                                 <option value="" selected disabled>Select vaccine status</option>
                                 <option value='SAFE'>Safe</option>
                                 <option value='SUSPENDED'>Suspended</option>
@@ -31,7 +31,7 @@ include_once '../../../config/db.php';
                             <input type="date" class="form-control" id="date_of_approval" name="date_of_approval" required>
                         </div>
                         <div class="col-sm-6">
-                            <label for="date_of_suspension" class="form-label">Suspended Date</label>
+                            <label id="date_of_suspension_label" for="date_of_suspension" class="form-label">Suspended Date</label>
                             <input type="date" class="form-control" id="date_of_suspension" name="date_of_suspension">
                         </div>
                         <div>
@@ -43,6 +43,28 @@ include_once '../../../config/db.php';
         </div>
     </div>
     </div>
+
+
+    <script>
+
+        document.getElementById('date_of_suspension').style.display = 'none';
+        document.getElementById('date_of_suspension_label').style.display = 'none';      
+        function toggleSuspensionDate() {
+            let currentStatus = document.getElementById('status').value;
+            console.log(currentStatus);
+            if(currentStatus === 'SAFE'){
+                document.getElementById('date_of_suspension').style.display = 'none';
+                document.getElementById('date_of_suspension_label').style.display = 'none';
+                document.getElementById('date_of_suspension').required = false;  
+
+            }else{
+                document.getElementById('date_of_suspension').style.display = 'block';
+                document.getElementById('date_of_suspension_label').style.display = 'block'; 
+                document.getElementById('date_of_suspension').required = true;              
+            }
+        }
+
+    </script>
 </body>
 
 </html>
