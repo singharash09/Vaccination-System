@@ -16,18 +16,6 @@ $personProvince = $_POST['personProvince'];
 $personPostalCode= $_POST['personPostalCode'];
 
 
-echo "SSN: " . $personSSN . "\n";
-echo "medicare: ". $personMedicare . "\n";
-echo "FNAME: " . $personFname . "\n";
-echo "LNAME: " . $personLname . "\n";
-echo "DOB: " . $personDOB . "\n";
-
-echo "EMAIL: " . $personEmail . "\n";
-echo "PHONE: " . $personPhoneNumber . "\n";
-echo "CITIZENSHIP: " . $personCitizenship . "\n";
-echo "ADDRESS: " . $personAddress . "\n";
-echo "POSTAL CODE: ". $personPostalCode . "\n";
-
 
 
 $query1 = "INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('$personPostalCode', '$personCity', '$personProvince') 

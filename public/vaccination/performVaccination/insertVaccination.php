@@ -100,7 +100,7 @@ if(isset($_GET['insertion'])){
                               <select class="form-select" name="typeName" id="typeName" aria-label="Select Type" required>
                                 <option>Select</option>
                                   <?php
-                                  $query1 = "SELECT type_name FROM Vaccine_Type;";
+                                  $query1 = "SELECT type_name FROM Vaccine_Type WHERE status='SAFE';";
                                   $result = mysqli_query($conn, $query1);
                                   $resultCheck = mysqli_num_rows($result);
                                   if($resultCheck>0){

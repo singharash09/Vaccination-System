@@ -318,10 +318,27 @@ inner join Vaccination_Facility as VF on I.facility_name = VF.facility_name
 inner join Postal_Code as PC on VF.postal_code = PC.postal_code
 order by PC.province_code asc, I.number_of_vaccines desc;
 
-SELEct * FROM Inventory;
-
-
-
+-- Query 18
+SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
+(SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL AND facility_name = f.facility_name) AS `num_workers`,
+COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
+(SELECT SUM(number_of_vaccines) FROM Shipment as s WHERE s.facility_name = f.facility_name) as `total_doses_received`,
+COUNT(DISTINCT tin.transfer_ID) as `num_trans_in`,
+(SELECT SUM(number_of_vaccines) FROM Transfers as t WHERE f.facility_name = t.transfer_in) as `doses_trans_in`,
+COUNT(DISTINCT tout.transfer_ID) as `num_trans_out`,
+(SELECT SUM(number_of_vaccines) FROM Transfers as t WHERE f.facility_name = t.transfer_out) as `doses_trans_out`,
+i.type_name,
+i.number_of_vaccines,
+COUNT(DISTINCT v.ssn) as `total_ppl_vax`,
+COUNT(DISTINCT v.vaccination_id) as `total_vax_given`
+FROM Vaccination_Facility f
+LEFT JOIN Vaccination AS v ON f.facility_name = v.facility_name
+INNER JOIN Postal_Code AS p ON f.postal_code = p.postal_code
+INNER JOIN Inventory AS i ON f.facility_name = i.facility_name
+INNER JOIN Shipment AS s ON f.facility_name = s.facility_name
+LEFT JOIN Transfers AS tin ON f.facility_name = tin.transfer_in
+LEFT JOIN Transfers AS tout ON f.facility_name = tout.transfer_out
+GROUP BY f.facility_name, i.type_name;
 
 -- DUMMY DATA USED BY ARASH
 INSERT INTO Age_Group VALUES (1, 80, 130);
