@@ -12,6 +12,6 @@ $query = "INSERT INTO Shipment VALUES (NULL, '$shipmentType', '$shipmentQuantity
 mysqli_query($conn, $query);
 
 
-header("Location: ../public/facility/Facility.php?shipment=success");
+header("Location: ../public/Facility/Facility.php?shipment=success");
 
 ?>
