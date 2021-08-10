@@ -389,8 +389,88 @@ order by HCW.EID asc;";
             </div>
    </div>
 
+   <div class="row" style="margin:25px; margin-bottom:50px;">
+         <div class="col-sm-12">
+                <h4>Detailed Report Of Facilities In Montreal</h4>               
+               <div class="card" >
+                  <div class="card-body">
+                     <div style="height: 200px; overflow: scroll;">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th scope="col-md">Facility Name</th>
+                                 <th scope="col-md">Address</th>   
+                                 <th scope="col-md">Facility Type</th>
+                                 <th scope="col-md">Phone Number</th>   
+                                 <th scope="col-md">Number Of Wokers</th>  
+                                 <th scope="col-md">Total Number Of Shipments</th>   
+                                 <th scope="col-md">Doses Received Via Shipments</th> 
+                                 <th scope="col-md">Total Number Of Transfers In</th> 
+                                 <th scope="col-md">Doses from Transfers In</th>                                                                                                                     
+                                 <th scope="col-md">Total Number Of Transfers Out</th>  
+                                 <th scope="col-md">Doses from Transfers Out</th>                                  
+                                 <th scope="col-md">Type Name</th>  
+                                 <th scope="col-md">Number of Vaccines</th>
+                                 <th scope="col-md">Total People Vaccinated</th>  
+                                 <th scope="col-md">Total Doses Given</th>                                                                                                                                                                                                                                                                                                                                                                   
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <?php
+                                 $query = "SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
+(SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL AND facility_name = f.facility_name) AS `num_workers`,
+COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
+(SELECT SUM(number_of_vaccines) FROM Shipment as s WHERE s.facility_name = f.facility_name) as `total_doses_received`,
+COUNT(DISTINCT tin.transfer_ID) as `num_trans_in`,
+(SELECT SUM(number_of_vaccines) FROM Transfers as t WHERE f.facility_name = t.transfer_in) as `doses_trans_in`,
+COUNT(DISTINCT tout.transfer_ID) as `num_trans_out`,
+(SELECT SUM(number_of_vaccines) FROM Transfers as t WHERE f.facility_name = t.transfer_out) as `doses_trans_out`,
+i.type_name,
+i.number_of_vaccines,
+COUNT(DISTINCT v.ssn) as `total_ppl_vax`,
+COUNT(DISTINCT v.vaccination_id) as `total_vax_given`
+FROM Vaccination_Facility f
+LEFT JOIN Vaccination AS v ON f.facility_name = v.facility_name
+INNER JOIN Postal_Code AS p ON f.postal_code = p.postal_code
+INNER JOIN Inventory AS i ON f.facility_name = i.facility_name
+INNER JOIN Shipment AS s ON f.facility_name = s.facility_name
+LEFT JOIN Transfers AS tin ON f.facility_name = tin.transfer_in
+LEFT JOIN Transfers AS tout ON f.facility_name = tout.transfer_out
+GROUP BY f.facility_name, i.type_name;";  
+                                 $result = mysqli_query($conn, $query);
+                                 $resultCheck = mysqli_num_rows($result);
+                                 if($resultCheck>0){
+                                     while($row = mysqli_fetch_assoc($result)){
+                                         echo '<tr><th scope="row">'.$row['facility_name'].'</th>
+                                         <td>'.$row['address'].'</td> 
+                                           <td>'.$row['facility_type'].'</td> 
+                                           <td>'.$row['phone_number'].'</td>                                                                                                                                 
+                                           <td>'.$row['num_workers'].'</td> 
+                                           <td>'.$row['num_shipments'].'</td> 
+                                           <td>'.$row['total_doses_received'].'</td>  
+                                           <td>'.$row['num_trans_in'].'</td>  
+                                           <td>'.$row['doses_trans_in'].'</td>  
+                                           <td>'.$row['num_trans_out'].'</td>  
+                                           <td>'.$row['doses_trans_out'].'</td>   
+                                          <td>'.$row['type_name'].'</td>
+                                          <td>'.$row['number_of_vaccines'].'</td>                                                                                                                                                                   
+                                          <td>'.$row['total_ppl_vax'].'</td>
+                                          <td>'.$row['total_vax_given'].'</td>
+                                         </tr>';
+                                     }
+                                 }
+                                 ?>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   </div>
 
 
         </div>
    </body>
+
+   <?php   include_once 'templates/footer.php'; ?>
 </html>
