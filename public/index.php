@@ -142,7 +142,7 @@
                <!---ROW 3--->
                
          <div class="row" style="margin:25px; margin-bottom:50px;">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <h4>Inventory By Province</h4>               
                <div class="card" >
                   <div class="card-body">
@@ -180,7 +180,214 @@
                   </div>
                </div>
             </div>
+   
+            
+            <div class="col-sm-6">
+                <h4>Vaccines by received city</h4>               
+               <div class="card" >
+                  <div class="card-body">
+                     <div style="height: 200px; overflow: scroll;">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th scope="col-md">City</th>
+                                 <th scope="col-md">Total</th>                           
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <?php
+                                 $query = "SELECT Postal_Code.city, SUM(Shipment.number_of_vaccines) AS 'Total Number of Vaccines'
+FROm Shipment, Postal_Code, Vaccination_Facility
+WHERE Shipment.date_of_transfer>='2021-01-01' and Shipment.date_of_transfer<='2021-07-22'
+AND Postal_Code.postal_code = Vaccination_Facility.postal_code AND
+Shipment.facility_name= Vaccination_Facility.facility_name AND Postal_Code.province_code='QC' 
+group by Postal_Code.city
+order by Postal_Code.city asc;";  
+                                 $result = mysqli_query($conn, $query);
+                                 $resultCheck = mysqli_num_rows($result);
+                                 if($resultCheck>0){
+                                     while($row = mysqli_fetch_assoc($result)){
+                                         echo '<tr><th scope="row">'.$row['city'].'</th>
+                                         <td>'.$row['Total Number of Vaccines'].'</td>                                                                                                    
+                                         </tr>';
+                                     }
+                                 }
+                                 ?>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+          
          </div>
+
+
+   <div class="row" style="margin:25px; margin-bottom:50px;">
+         <div class="col-sm-12">
+                <h4>Total vaccines used between JAN 1 & JUL 22</h4>               
+               <div class="card" >
+                  <div class="card-body">
+                     <div style="height: 200px; overflow: scroll;">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th scope="col-md">Province</th>
+                                 <th scope="col-md">Type Name</th>
+                                 <th scope="col-md">Count</th>                            
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <?php
+                                 $query = "select Postal_Code.province_code, Vaccine_Type.type_name, COUNT(DISTINCT Vaccination.SSN) AS 'Count'
+from Postal_Code, Vaccine_Type, Vaccination, Vaccination_Facility
+where Vaccination.date_of_vaccination>='2021-01-01' and Vaccination.date_of_vaccination<='2021-07-22'
+	and Vaccine_Type.type_name=Vaccination.type_name and Vaccination.facility_name=Vaccination_Facility.facility_name
+    and Vaccination_Facility.postal_code=Postal_Code.postal_code
+group by Postal_Code.province_code, Vaccine_Type.type_name
+order by Postal_Code.province_code asc, Vaccine_Type.type_name asc;";  
+                                 $result = mysqli_query($conn, $query);
+                                 $resultCheck = mysqli_num_rows($result);
+                                 if($resultCheck>0){
+                                     while($row = mysqli_fetch_assoc($result)){
+                                         echo '<tr><th scope="row">'.$row['province_code'].'</th>
+                                         <td>'.$row['type_name'].'</td>
+                                         <td>'.$row['Count'].'</td>                                                                                                    
+                                         </tr>';
+                                     }
+                                 }
+                                 ?>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   </div>
+
+
+
+   <div class="row" style="margin:25px; margin-bottom:50px;">
+         <div class="col-sm-12">
+                <h4>All workers working in a specific facility</h4>               
+               <div class="card" >
+                  <div class="card-body">
+                     <div style="height: 200px; overflow: scroll;">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th scope="col-md">Facility Name</th>
+                                 <th scope="col-md">Employee ID</th>                            
+                                 <th scope="col-md">SSN</th>
+                                 <th scope="col-md">First Name</th>   
+                                 <th scope="col-md">Last Name</th>
+                                 <th scope="col-md">DOB</th>  
+                                 <th scope="col-md">Medicare</th>   
+                                 <th scope="col-md">Phone</th>  
+                                 <th scope="col-md">Email</th>                              
+                                 <th scope="col-md">Address</th>
+                                 <th scope="col-md">City</th>   
+                                 <th scope="col-md">Province</th> 
+                                 <th scope="col-md">Postal Code</th> 
+                                 <th scope="col-md">Citizenship</th>                                                                                                                                                                                                                                                                                                               
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <?php
+                                 $query = "select WA.facility_name, HCW.EID, HCW.SSN, Person.first_name, last_name, date_of_birth, medicare, 
+	telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
+    WA.start_date, end_date
+from HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
+where WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code
+group by WA.facility_name, HCW.EID
+order by WA.facility_name asc, HCW.EID asc;";  
+                                 $result = mysqli_query($conn, $query);
+                                 $resultCheck = mysqli_num_rows($result);
+                                 if($resultCheck>0){
+                                     while($row = mysqli_fetch_assoc($result)){
+                                         echo '<tr><th scope="row">'.$row['facility_name'].'</th>
+                                         <td>'.$row['EID'].'</td>
+                                         <td>'.$row['SSN'].'</td>
+                                         <td>'.$row['first_name'].'</td> 
+                                           <td>'.$row['last_name'].'</td> 
+                                           <td>'.$row['date_of_birth'].'</td>                                                                                                                                 
+                                           <td>'.$row['medicare'].'</td> 
+                                           <td>'.$row['telephone_number'].'</td> 
+                                           <td>'.$row['email_address'].'</td> 
+                                           <td>'.$row['address'].'</td>
+                                           <td>'.$row['city'].'</td> 
+                                           <td>'.$row['province_code'].'</td> 
+                                           <td>'.$row['postal_code'].'</td>
+                                           <td>'.$row['citizenship'].'</td>   
+
+                                         </tr>';
+                                     }
+                                 }
+                                 ?>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   </div>
+         
+
+
+   <div class="row" style="margin:25px; margin-bottom:50px;">
+         <div class="col-sm-12">
+                <h4>All workers in QC never vaccinated or vaccinated only once</h4>               
+               <div class="card" >
+                  <div class="card-body">
+                     <div style="height: 200px; overflow: scroll;">
+                        <table class="table table-striped">
+                           <thead>
+                              <tr>
+                                 <th scope="col-md">Employee ID</th>
+                                 <th scope="col-md">First Name</th>   
+                                 <th scope="col-md">Last Name</th>
+                                 <th scope="col-md">DOB</th>   
+                                 <th scope="col-md">Phone</th>  
+                                 <th scope="col-md">Email</th>                              
+                                 <th scope="col-md">City</th>   
+                                 <th scope="col-md">Facility Name</th>                                                                                                                                                                                                                                                                                                               
+                              </tr>
+                           </thead>
+                           <tbody>
+                              <?php
+                                 $query = "select HCW.EID, P.first_name, P.last_name, P.date_of_birth, P.telephone_number, PC.city,
+	P.email_address, WA.facility_name
+from Person P
+LEFT JOIN Vaccination AS V on P.SSN = V.SSN
+INNER JOIN Works_At as WA on P.SSN = WA.SSN
+INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
+INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
+group by HCW.EID
+having COUNT(V.SSN)<=1
+order by HCW.EID asc;";  
+                                 $result = mysqli_query($conn, $query);
+                                 $resultCheck = mysqli_num_rows($result);
+                                 if($resultCheck>0){
+                                     while($row = mysqli_fetch_assoc($result)){
+                                         echo '<tr><th scope="row">'.$row['EID'].'</th>
+                                         <td>'.$row['first_name'].'</td> 
+                                           <td>'.$row['last_name'].'</td> 
+                                           <td>'.$row['date_of_birth'].'</td>                                                                                                                                 
+                                           <td>'.$row['telephone_number'].'</td> 
+                                           <td>'.$row['email_address'].'</td> 
+                                           <td>'.$row['city'].'</td> 
+                                           <td>'.$row['facility_name'].'</td>  
+                                         </tr>';
+                                     }
+                                 }
+                                 ?>
+                           </tbody>
+                        </table>
+                     </div>
+                  </div>
+               </div>
+            </div>
+   </div>
 
 
 
