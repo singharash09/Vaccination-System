@@ -12,8 +12,6 @@ $query = "UPDATE Vaccine_Type
 SET status='$status', date_of_approval='$date_of_approval', date_of_suspension=$date_of_suspension
 WHERE type_name='$type_name';";
 
-echo "'<script>console.log(\"$query\")</script>'";
-error_log($query);
 mysqli_query($conn, $query);
 
 header("Location: ../public/vaccination/vaccine/vaccine.php?edit=<?php echo $type_name . $status . $date_of_approval . $date_of_suspension ?>");
