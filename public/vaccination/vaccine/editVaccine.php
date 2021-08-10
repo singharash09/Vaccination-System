@@ -39,6 +39,7 @@ include_once '../../../config/db.php';
                         </div>
                         <div class="col-sm-12">
                             <label for="status" class="form-label">Vaccine Status</label>
+
                             <select class="form-select" id="status" name="status" aria-label="Select Type" onchange='toggleSuspensionDate()' required>
                                 <?php
                                     if($editStatus == 'SAFE'){
@@ -57,6 +58,7 @@ include_once '../../../config/db.php';
                             <input type="date" value="<?php echo $editApproval?>" class=" form-control" id="date_of_approval" name="date_of_approval" required>
                         </div>
                         <div class="col-sm-6">
+
                             <label id="date_of_suspension_label" for="date_of_suspension" class="form-label">Suspended Date</label>
                             <input type="date" value="<?php echo $editSuspension?>" class="form-control" id="date_of_suspension" name="date_of_suspension">
                         </div>
@@ -67,6 +69,7 @@ include_once '../../../config/db.php';
                 </div>
             </div>
         </div>
+
 
     <script>
     
@@ -93,6 +96,7 @@ include_once '../../../config/db.php';
         }
 
     </script>
+
 </body>
 
 </html>

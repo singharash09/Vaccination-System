@@ -20,6 +20,7 @@ include_once '../../../config/db.php';
                         </div>
                         <div class="col-sm-6">
                             <label for="status" class="form-label">Vaccine Status</label>
+
                             <select class="form-select" id="status" name="status" aria-label="Select Type" onchange='toggleSuspensionDate()' required>
                                 <option value="" selected disabled>Select vaccine status</option>
                                 <option value='SAFE'>Safe</option>
@@ -45,6 +46,7 @@ include_once '../../../config/db.php';
     </div>
 
 
+
     <script>
 
         document.getElementById('date_of_suspension').style.display = 'none';
@@ -65,6 +67,7 @@ include_once '../../../config/db.php';
         }
 
     </script>
+
 </body>
 
 </html>
