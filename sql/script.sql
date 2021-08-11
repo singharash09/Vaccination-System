@@ -14,8 +14,7 @@ CREATE TABLE Age_Group (
 CREATE TABLE Province(
 	province_code CHAR(2) NOT NULL,
 	eligible_group_id INTEGER NOT NULL,
-    
-    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (eligible_group_id) REFERENCES Age_Group(group_id) ON DELETE CASCADE,
     PRIMARY KEY (province_code)
 );
 
@@ -23,8 +22,7 @@ CREATE TABLE Postal_Code (
     postal_code CHAR(6) NOT NULL,
 	city VARCHAR(30) NOT NULL,
 	province_code CHAR(2) NOT NULL,
-	
-    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (province_code) REFERENCES Province(province_code) ON DELETE CASCADE,
     PRIMARY KEY (postal_code)
 );
 
@@ -42,7 +40,6 @@ CREATE TABLE Person (
     -- address info
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
-    
     FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (SSN)
 );
@@ -57,16 +54,14 @@ CREATE TABLE Infection (
     SSN CHAR(9) NOT NULL,
     date_of_infection DATE NOT NULL,    
     type_of_infection VARCHAR(30),
-    
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
-    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (type_of_infection) REFERENCES Infection_Type(type_of_infection),
     PRIMARY KEY(SSN, date_of_infection)
 );
 
 CREATE TABLE HealthCare_Worker(
     SSN CHAR(9),
     EID CHAR(9) NOT NULL ,
-
     FOREIGN KEY(SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     UNIQUE (EID),
     PRIMARY KEY(SSN)
@@ -78,7 +73,6 @@ CREATE TABLE Vaccine_Type (
     status ENUM('SAFE', 'SUSPENDED'),
     date_of_approval DATE ,
     date_of_suspension DATE,
-
     PRIMARY KEY (type_name)
 );
 
@@ -93,7 +87,6 @@ CREATE TABLE Vaccination_Facility (
     -- address info
     address VARCHAR(255) NOT NULL,
     postal_code CHAR(6),
-    
     FOREIGN KEY (postal_code) REFERENCES Postal_Code(postal_code) ON DELETE CASCADE,
     PRIMARY KEY (facility_name)
 );
@@ -104,8 +97,6 @@ CREATE TABLE Works_At(
     facility_name VARCHAR(30),
     start_date DATE NOT NULL,
     end_date DATE ,
-    
-    
     FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
@@ -118,7 +109,6 @@ CREATE TABLE Manages(
     facility_name VARCHAR(30),
     start_date DATE NOT NULL,
     end_date DATE ,
-    
     FOREIGN KEY (SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (SSN, facility_name, start_date)
@@ -129,14 +119,13 @@ CREATE TABLE Manages(
 CREATE TABLE Vaccination(
 	vaccination_id INTEGER NOT NULL AUTO_INCREMENT,
     
-    #information about this vaccination instance
+    -- information about this vaccination instance
     SSN CHAR(9),
     facility_name VARCHAR(30),
 	type_name VARCHAR(30),
     dose_number INTEGER,
     date_of_vaccination DATE,
     Employee_SSN CHAR(9),
-    
     FOREIGN KEY (Employee_SSN) REFERENCES HealthCare_Worker(SSN) ON DELETE CASCADE,
     FOREIGN KEY (SSN) REFERENCES Person(SSN) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name)ON DELETE CASCADE,
@@ -149,7 +138,6 @@ CREATE TABLE Inventory(
     facility_name VARCHAR(30),
     number_of_vaccines int NOT NULL,
     type_name VARCHAR(30),
-
     FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (facility_name, type_name)
@@ -161,7 +149,6 @@ CREATE TABLE Shipment(
     number_of_vaccines INT NOT NULL,
     date_of_transfer DATE NOT NULL,
     facility_name VARCHAR(30),
-
     FOREIGN KEY (type_name) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE ,
     FOREIGN KEY (facility_name) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     PRIMARY KEY (shipment_ID)
@@ -174,11 +161,9 @@ CREATE TABLE Transfers(
     vaccine_type VARCHAR(30),
     number_of_vaccines INT NOT NULL,
     date_of_transfer DATE NOT NULL,
-
     FOREIGN KEY (vaccine_type) REFERENCES Vaccine_Type(type_name) ON DELETE CASCADE,
     FOREIGN KEY (transfer_in) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
     FOREIGN KEY (transfer_out) REFERENCES Vaccination_Facility(facility_name) ON DELETE CASCADE,
-
     PRIMARY KEY(transfer_ID)
 );
 
@@ -222,7 +207,7 @@ END //
 DELIMITER ;
 
 DROP TRIGGER shipment_update;
-SELECT DISTINCT type_name FROM Inventory WHERE facility_name="A Facility";
+
  -- QUERY 10 
  
 DELIMITER //
@@ -248,6 +233,14 @@ BEFORE INSERT ON Transfers FOR EACH ROW
             (EXISTS(SELECT facility_name, type_name FROM Inventory WHERE facility_name = NEW.transfer_out AND type_name = NEW.vaccine_type))) THEN
 				
                 INSERT INTO Inventory VALUES (NEW.transfer_in, NEW.number_of_vaccines, NEW.vaccine_type);
+                
+                UPDATE Inventory
+				SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - New.number_of_vaccines
+				WHERE Inventory.facility_name = New.transfer_out AND Inventory.type_name = New.vaccine_type;
+                
+			ELSE
+				SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'The sending Facility doesnt have an inventory of the SELECTed vaccine!';
+
             
 		END IF;
 		
@@ -256,67 +249,115 @@ BEFORE INSERT ON Transfers FOR EACH ROW
 DELIMITER ;
 DROP TRIGGER transfer_update;    
 
+
     -- QUERY 11 
-    -- ( check if the person is part of the age group can be done on the front_end)
-    
+  
+   
+
 DELIMITER //
 CREATE TRIGGER Vaccination_update
 BEFORE INSERT ON Vaccination FOR EACH ROW
 BEGIN 
 
+	IF ((SELECT Person.SSN
+FROM Person,Age_Group ,Province, Vaccination_Facility , Postal_Code
+WHERE Person.SSN = new.SSN AND
+Vaccination_Facility.postal_code = Postal_Code.postal_code AND
+Province.province_code = Postal_Code.province_code AND
+Province.eligible_group_id = Age_Group.group_id AND
+Vaccination_Facility.facility_name = new.facility_name AND
+(FLOOR(DATEDIFF(new.date_of_vaccination,date_of_birth)/365.25) >= min_age))AND
+(EXISTS(SELECT facility_name, type_name FROM Inventory WHERE Inventory.facility_name = NEW.facility_name AND type_name = NEW.type_name AND number_of_vaccines >0)))
+            
+            
+            THEN
+            
+
     UPDATE Inventory
     SET Inventory.number_of_vaccines = Inventory.number_of_vaccines - 1
     WHERE Inventory.facility_name = New.facility_name AND Inventory.type_name = New.type_name;
     
-	
+    ELSE
+    
+		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Person is too young to be vaccinated in this province!';
+
+    
+	END if;
     
 END//    
 DELIMITER ;
+
 
 DROP TRIGGER Vaccination_update;
 
 -- Query 12
 
-
 SELECT P.SSN, P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, Pc.city,dose_number  date_of_vaccination, type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
-FROM Person P
-LEFT JOIN Infection as I on P.SSN = I.SSN
-INNER JOIN Postal_Code as Pc on P.postal_code = Pc.postal_code
-INNER JOIN Vaccination as V on P.SSN = V.SSN
-WHERE
-dose_number = 1 AND
-Email_address NOT IN(SELECT email_address FROM Person,Vaccination Where Person.SSN = Vaccination.SSN AND dose_number =2) AND
-(FLOOR(DATEDIFF(date_of_vaccination,date_of_birth)/365.25) >=60)
-GROUP BY P.SSN;
+                                 FROM Person P
+                                 LEFT JOIN Infection as I on P.SSN = I.SSN
+                                 INNER JOIN Postal_Code as Pc on P.postal_code = Pc.postal_code
+                                 INNER JOIN Vaccination as V on P.SSN = V.SSN
+                                 WHERE
+                                 dose_number = 1 AND
+                                 P.SSN NOT IN(SELECT Person.SSN FROM Person,Vaccination WHERE Person.SSN = Vaccination.SSN AND dose_number =2) AND
+                                 (FLOOR(DATEDIFF(date_of_vaccination,date_of_birth)/365.25) >=60)
+                                 GROUP BY P.SSN;
+                                 
+
+
                                  
 
 
 
 -- Query 13
-select P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, PC.city, V.date_of_vaccination, V.type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
-from Person P
+SELECT P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, PC.city, V.date_of_vaccination, V.type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
+FROM Person P
 LEFT JOIN  Infection as I on P.SSN = I.SSN
-inner join Postal_Code as PC on P.postal_code = PC.postal_code 
-inner join Vaccination as V on P.SSN = V.SSN
+INNER JOIN Postal_Code as PC on P.postal_code = PC.postal_code 
+INNER JOIN Vaccination as V on P.SSN = V.SSN
 GROUP BY P.SSN
 having count(distinct V.type_name) >= 2;
 
-SELECT * FROM Infection;
+
 -- Query 14
-select P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, PC.city, V.date_of_vaccination, V.type_name, count(I.date_of_infection)
-from Person P
+SELECT P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, PC.city, V.date_of_vaccination, V.type_name, count(I.date_of_infection)
+FROM Person P
 LEFT JOIN Infection as I on P.SSN = I.SSN
-inner join Postal_Code as PC on P.postal_code = PC.postal_code 
-inner join Vaccination as V on P.SSN = V.SSN
+INNER JOIN Postal_Code as PC on P.postal_code = PC.postal_code 
+INNER JOIN Vaccination as V on P.SSN = V.SSN
 GROUP BY P.SSN
 having count(distinct I.type_of_infection) >= 2;
 
+
 -- Query 15
-select PC.province_code, I.type_name, I.number_of_vaccines
-from Inventory I
-inner join Vaccination_Facility as VF on I.facility_name = VF.facility_name
-inner join Postal_Code as PC on VF.postal_code = PC.postal_code
-order by PC.province_code asc, I.number_of_vaccines desc;
+SELECT PC.province_code, I.type_name, SUM(I.number_of_vaccines)
+FROM Inventory I
+INNER JOIN Vaccination_Facility as VF on I.facility_name = VF.facility_name
+INNER JOIN Postal_Code as PC on VF.postal_code = PC.postal_code
+GROUP BY (type_name)
+ORDER BY PC.province_code asc, I.number_of_vaccines desc;
+
+
+-- QUERY 16
+SELECT Postal_Code.province_code, Vaccine_Type.type_name, COUNT(DISTINCT Vaccination.SSN)
+FROM Postal_Code, Vaccine_Type, Vaccination, Vaccination_Facility
+WHERE Vaccination.date_of_vaccination>='2021-01-01' and Vaccination.date_of_vaccination<='2021-07-22'
+	and Vaccine_Type.type_name=Vaccination.type_name and Vaccination.facility_name=Vaccination_Facility.facility_name
+    and Vaccination_Facility.postal_code=Postal_Code.postal_code
+GROUP BY Postal_Code.province_code, Vaccine_Type.type_name
+ORDER BY Postal_Code.province_code asc, Vaccine_Type.type_name asc;
+
+
+
+-- QUERY 17
+
+SELECT VF.facility_name , VF.address, VF.facility_type, VF.phone_number, Postal_Code.city, SUM(S.number_of_vaccines) AS 'Total Number of Vaccines'
+FROM Shipment, Postal_Code, Vaccination_Facility VF
+INNER JOIN Shipment AS S on VF.facility_name = S.facility_name
+LEFT JOIN Works_At as WA on VF.facility_name = WA.facility_name
+WHERE Postal_Code.postal_code = VF.postal_code 
+GROUP BY Postal_Code.city
+ORDER BY Postal_Code.city asc;
 
 -- Query 18
 SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
@@ -339,6 +380,39 @@ INNER JOIN Shipment AS s ON f.facility_name = s.facility_name
 LEFT JOIN Transfers AS tin ON f.facility_name = tin.transfer_in
 LEFT JOIN Transfers AS tout ON f.facility_name = tout.transfer_out
 GROUP BY f.facility_name, i.type_name;
+
+
+
+
+
+
+
+
+
+-- QUERY 19
+SELECT WA.facility_name, HCW.EID, HCW.SSN, Person.first_name, last_name, date_of_birth, medicare, 
+	telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
+    WA.start_date, end_date
+FROM HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
+WHERE WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code
+GROUP BY WA.facility_name, HCW.EID
+ORDER BY WA.facility_name asc, HCW.EID asc;
+
+-- QUERY 20
+SELECT HCW.EID, P.first_name, P.last_name, P.date_of_birth, P.telephone_number, PC.city,
+	P.email_address, WA.facility_name
+FROM Person P
+LEFT JOIN Vaccination AS V on P.SSN = V.SSN
+INNER JOIN Works_At as WA on P.SSN = WA.SSN
+INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
+INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
+WHERE PC.province_code ='QC'
+GROUP BY HCW.EID
+having COUNT(V.SSN)<=1
+ORDER BY HCW.EID asc;
+
+
+
 
 -- DUMMY DATA USED BY ARASH
 INSERT INTO Age_Group VALUES (1, 80, 130);
@@ -367,22 +441,20 @@ INSERT INTO Vaccine_Type  VALUES('Johnson & Johnson','SUSPENDED','2021-12-04', '
 INSERT INTO Inventory VALUES ('Olympic Stadium', 20, 'Pfizer');
 INSERT INTO Inventory VALUES ('Olympic Stadium', 40, 'Moderna');
 
-SELECT * FROM HealthCare_Worker;
 
-INSERT INTO Vaccination VALUES (null,'555555555','Olympic Stadium','Pfizer',2,'2021-09-08','111111111');
+
+
+INSERT INTO Vaccination VALUES (null,'111111111','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
 INSERT INTO Vaccination VALUES (null,'555555555','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
 INSERT INTO Vaccination VALUES (null,'222222222','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
-       INSERT INTO Vaccination VALUES (null,'575003660','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
-     SELECt * FROM Vaccination; 
+INSERT INTO Vaccination VALUES (null,'575003660','Olympic Stadium','Moderna',1,'2021-08-08','111111111');
 
-
-SELECT * FROM Inventory;
 INSERT INTO Transfers VALUES (null,'University Of Toronto','Olympic Stadium','Pfizer',20,'2021-08-06');
-SELECT * FROM Vaccination_Facility;
-SELECT * FROM Postal_Code;
+
+
 SELECT*FROM Vaccination_Facility, Postal_Code WHERE Vaccination_Facility.postal_code = Postal_Code.postal_code;
-SELECT*FROM Inventory;
-SELECT*FROM Shipment;
+
+SELECT * FROM HealthCare_Worker;
 SELECT*FROM Province;
 DELETE FROM Inventory;
 DELETE FROM Shipment;
@@ -391,15 +463,19 @@ SELECT * FROM Transfers;
 DELETE FROM Transfers;
 INSERT INTO Postal_Code  (postal_code, city, province_code) VALUES('G0A3J0', 'Toronto', 'ON')
 ON DUPLICATE KEY UPDATE city='Toronto', province_code='ON';
-DELETE FROM Postal_Code;
+DELETE FROM Inventory WHERE facility_name = 'University Of Toronto';
 
 INSERT Into Infection VALUES('575003660','2021-09-09','Alpha');
 INSERT Into Infection VALUES('575003660','2021-08-08','Delta');
 INSERT Into Infection VALUES('222222222','2021-08-08','Delta');
 INSERT Into Infection VALUES('222222222','2022-08-08','Delta');
 Insert Into Infection_Type VALUES ('Delta');
-Select * FROM Inventory;
-SELECT * FROm Infection_Type;
+SELECT * FROM Inventory;
+SELECT * FROM Infection_Type;
+SELECT * FROM Vaccine_Type;
 
-SELECt * FROM Infection;
+UPDATE Vaccine_Type 
+SET status='SAFE', date_of_approval='2020-08-09', date_of_suspension = NULL
+WHERE type_name='Pfizer';
+SELECT * FROM Infection;
 SELECT * FROM Vaccination;
