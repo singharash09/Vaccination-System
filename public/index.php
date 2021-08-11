@@ -224,7 +224,7 @@
 
    <div class="row" style="margin:25px; margin-bottom:50px;">
          <div class="col-sm-12">
-                <h4>Total vaccines used between JAN 1 & JUL 22</h4>               
+                <h4>Total vaccines used between January 1 & July 22</h4>               
                <div class="card" >
                   <div class="card-body">
                      <div style="height: 200px; overflow: scroll;">
@@ -297,7 +297,7 @@
                                                 telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
                                                 WA.start_date, end_date
                                              from HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
-                                             where WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Bruce Gardens Hospital'
+                                             where WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Williams View Clinic'
                                              group by WA.facility_name, HCW.EID
                                              order by WA.facility_name asc, HCW.EID asc;";  
                                  $result = mysqli_query($conn, $query);

@@ -2,6 +2,7 @@
 # requirements: faker, pandas, pymysql, sqlalchemy
 import random
 from faker import Faker
+from numpy import NaN, nan
 import pandas
 import datetime
 import itertools
@@ -97,7 +98,7 @@ for province in provinces:
         locations = Vaccination_Facility.loc[Vaccination_Facility['city'] == city]['facility_name'].tolist()
         numF = len(locations)
         it = itertools.cycle(locations)
-        for x in range(numPpl):
+        for x in range(30 if city == 'Montreal' else numPpl):
             # next location
             location = next(it)
             # personal details
@@ -118,7 +119,7 @@ for province in provinces:
 
             # Create some healthcare workers
             
-            if x < numWorkers * numF :
+            if x <= numWorkers * numF :
                 eid = fake.ssn().replace(' ', '')
                 while eid in HealthCare_Worker.SSN.values:
                     eid = fake.ssn().replace(' ','')
@@ -128,13 +129,18 @@ for province in provinces:
                 between = (vax_end - vax_start).days
                 start = vax_start + datetime.timedelta(days=random.randrange(between))
                 between = (vax_end - vax_start).days
-                end = start + datetime.timedelta(days=random.randrange(between))
+                # One worked with an end date
+                if x == (numWorkers * numF):
+                    end = start + datetime.timedelta(days=random.randrange(between))
+                # Rest working 
+                else:
+                    end = NaN
 
-                Works_At.loc[len(Works_At)] = [ssn, location, start, end] 
+                Works_At.loc[len(Works_At)] = [ssn, location, start, end]
 
                 # make one manager
-                if x < numFacilities:
-                    Manages.loc[len(Works_At)] = [ssn, location, start, end] 
+                if x < (5 if city == 'Montreal' else numFacilities):
+                    Manages.loc[len(Works_At)] = [ssn, location, start, NaN] 
 
             # Add the entires to the dataframe
             Person.loc[len(Person)] = [ssn, medicare, first, last, dob, email, phone, citizenship, address, pc, city]
@@ -211,4 +217,5 @@ Vaccine_Type.to_sql('Vaccine_Type', engine, if_exists='append',index=False, chun
 Vaccination_Facility.to_sql('Vaccination_Facility', engine, if_exists='append',index=False, chunksize=500)
 Shipment.to_sql('Shipment', engine, if_exists='append',index=False, chunksize=500)
 Works_At.to_sql('Works_At', engine, if_exists='append',index=False, chunksize=500)
+Manages.to_sql('Manages', engine, if_exists='append',index=False, chunksize=500)
 Vaccination.to_sql('Vaccination', engine, if_exists='append', index=False, chunksize=500)
