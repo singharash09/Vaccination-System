@@ -161,7 +161,7 @@
                                  from Inventory I
                                  inner join Vaccination_Facility as VF on I.facility_name = VF.facility_name
                                  inner join Postal_Code as PC on VF.postal_code = PC.postal_code
-                                 GROUP BY (type_name)
+                                 GROUP BY (PC.province_code)
                                  order by PC.province_code asc, I.number_of_vaccines desc;";  
                                  $result = mysqli_query($conn, $query);
                                  $resultCheck = mysqli_num_rows($result);
