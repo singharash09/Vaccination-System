@@ -20,13 +20,18 @@ include_once '../../../config/db.php';
                         <div class="col-sm">
                             <label for="eligible_group_id" class="form-label">Eligible Group</label>
                             <select class="form-select" id="eligible_group_id" name="eligible_group_id" aria-label="Select Type" required>
-                                <option value="" selected disabled>Select a group</option>
-                                <?php
-                                for ($x = 0; $x <= 10; $x++) {
-                                    echo '<option value=' . $x . '>' . $x . '</option>';
-                                }
-                                ?>
-                            </select>
+                                <option>Select</option>
+                                  <?php
+                                  $query1 = "SELECT group_id FROM Age_Group;";
+                                  $result = mysqli_query($conn, $query1);
+                                  $resultCheck = mysqli_num_rows($result);
+                                  if($resultCheck>0){
+                                      while($row = mysqli_fetch_assoc($result)){
+                                          echo '<option value="'.$row['group_id'].'">'.$row['group_id'].'</option>';
+                                        }
+                                    }
+                                  ?>
+                            </select> 
                         </div>
                         <div>
                             <button class="btn btn-success" type="submit">Add Province</button>
