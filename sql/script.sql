@@ -322,7 +322,7 @@ SELECT PC.province_code, I.type_name, SUM(I.number_of_vaccines)
 FROM Inventory I
 INNER JOIN Vaccination_Facility as VF on I.facility_name = VF.facility_name
 INNER JOIN Postal_Code as PC on VF.postal_code = PC.postal_code
-GROUP BY (PC.province_code)
+GROUP BY PC.province_code, I.type_name
 ORDER BY PC.province_code asc, I.number_of_vaccines desc;
 
 -- QUERY 16
@@ -335,7 +335,7 @@ GROUP BY Postal_Code.province_code, Vaccine_Type.type_name
 ORDER BY Postal_Code.province_code asc, Vaccine_Type.type_name asc;
 
 -- QUERY 17
-SELECT city, SUM(number_of_vaccines) 
+SELECT city, SUM(number_of_vaccines) AS `num_vaccines` 
 FROM Shipment s, Vaccination_Facility f, Postal_Code pc
 WHERE s.facility_name = f.facility_name AND f.postal_code = pc.postal_code 
 AND pc.province_code = 'QC'
