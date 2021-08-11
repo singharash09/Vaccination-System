@@ -208,7 +208,7 @@ DELIMITER ;
 
 DROP TRIGGER shipment_update;
 
- -- QUERY 10 
+-- QUERY 10 
  
 DELIMITER //
 CREATE TRIGGER transfer_update
@@ -249,11 +249,7 @@ BEFORE INSERT ON Transfers FOR EACH ROW
 DELIMITER ;
 DROP TRIGGER transfer_update;    
 
-
-    -- QUERY 11 
-  
-   
-
+-- QUERY 11 
 DELIMITER //
 CREATE TRIGGER Vaccination_update
 BEFORE INSERT ON Vaccination FOR EACH ROW
@@ -287,12 +283,10 @@ Vaccination_Facility.facility_name = new.facility_name AND
 END//    
 DELIMITER ;
 
-
 DROP TRIGGER Vaccination_update;
 
 -- Query 12
-
-SELECT P.SSN, P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, Pc.city,dose_number  date_of_vaccination, type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
+SELECT P.SSN, P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, Pc.city, date_of_vaccination, type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
                                  FROM Person P
                                  LEFT JOIN Infection as I on P.SSN = I.SSN
                                  INNER JOIN Postal_Code as Pc on P.postal_code = Pc.postal_code
@@ -303,18 +297,13 @@ SELECT P.SSN, P.first_name, P.last_name, P.date_of_birth, P.email_address, P.tel
                                  (FLOOR(DATEDIFF(date_of_vaccination,date_of_birth)/365.25) >=60)
                                  GROUP BY P.SSN;
                                  
-
-
-                                 
-
-
-
 -- Query 13
 SELECT P.first_name, P.last_name, P.date_of_birth, P.email_address, P.telephone_number, PC.city, V.date_of_vaccination, V.type_name, IF(COUNT(I.date_of_infection)> 0 , 'YES', 'NO') AS 'Previously Infected ?'
 FROM Person P
 LEFT JOIN  Infection as I on P.SSN = I.SSN
 INNER JOIN Postal_Code as PC on P.postal_code = PC.postal_code 
 INNER JOIN Vaccination as V on P.SSN = V.SSN
+WHERE PC.city = 'Montreal'
 GROUP BY P.SSN
 having count(distinct V.type_name) >= 2;
 
@@ -328,15 +317,13 @@ INNER JOIN Vaccination as V on P.SSN = V.SSN
 GROUP BY P.SSN
 having count(distinct I.type_of_infection) >= 2;
 
-
 -- Query 15
 SELECT PC.province_code, I.type_name, SUM(I.number_of_vaccines)
 FROM Inventory I
 INNER JOIN Vaccination_Facility as VF on I.facility_name = VF.facility_name
 INNER JOIN Postal_Code as PC on VF.postal_code = PC.postal_code
-GROUP BY (type_name)
+GROUP BY (PC.province_code)
 ORDER BY PC.province_code asc, I.number_of_vaccines desc;
-
 
 -- QUERY 16
 SELECT Postal_Code.province_code, Vaccine_Type.type_name, COUNT(DISTINCT Vaccination.SSN)
@@ -347,19 +334,15 @@ WHERE Vaccination.date_of_vaccination>='2021-01-01' and Vaccination.date_of_vacc
 GROUP BY Postal_Code.province_code, Vaccine_Type.type_name
 ORDER BY Postal_Code.province_code asc, Vaccine_Type.type_name asc;
 
-
-
 -- QUERY 17
+SELECT city, SUM(number_of_vaccines) 
+FROM Shipment s, Vaccination_Facility f, Postal_Code pc
+WHERE s.facility_name = f.facility_name AND f.postal_code = pc.postal_code 
+AND pc.province_code = 'QC'
+AND s.date_of_transfer BETWEEN CAST('2021-1-01' AS DATE) AND CAST('2021-7-22' AS DATE)
+GROUP BY city;
 
-SELECT VF.facility_name , VF.address, VF.facility_type, VF.phone_number, Postal_Code.city, SUM(S.number_of_vaccines) AS 'Total Number of Vaccines'
-FROM Shipment, Postal_Code, Vaccination_Facility VF
-INNER JOIN Shipment AS S on VF.facility_name = S.facility_name
-LEFT JOIN Works_At as WA on VF.facility_name = WA.facility_name
-WHERE Postal_Code.postal_code = VF.postal_code 
-GROUP BY Postal_Code.city
-ORDER BY Postal_Code.city asc;
-
--- Query 18
+-- QUERY 18
 SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
 (SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL AND facility_name = f.facility_name) AS `num_workers`,
 COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
@@ -379,22 +362,15 @@ INNER JOIN Inventory AS i ON f.facility_name = i.facility_name
 INNER JOIN Shipment AS s ON f.facility_name = s.facility_name
 LEFT JOIN Transfers AS tin ON f.facility_name = tin.transfer_in
 LEFT JOIN Transfers AS tout ON f.facility_name = tout.transfer_out
+WHERE p.city = 'Montreal'
 GROUP BY f.facility_name, i.type_name;
-
-
-
-
-
-
-
-
 
 -- QUERY 19
 SELECT WA.facility_name, HCW.EID, HCW.SSN, Person.first_name, last_name, date_of_birth, medicare, 
 	telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
     WA.start_date, end_date
 FROM HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
-WHERE WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code
+WHERE WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Gonzalez Knolls Clinic'
 GROUP BY WA.facility_name, HCW.EID
 ORDER BY WA.facility_name asc, HCW.EID asc;
 
@@ -410,9 +386,6 @@ WHERE PC.province_code ='QC'
 GROUP BY HCW.EID
 having COUNT(V.SSN)<=1
 ORDER BY HCW.EID asc;
-
-
-
 
 -- DUMMY DATA USED BY ARASH
 INSERT INTO Age_Group VALUES (1, 80, 130);

@@ -9,6 +9,7 @@ import itertools
 # Connect to MySQL 
 from sqlalchemy import create_engine
 engine = create_engine('mysql+pymysql://sjc353_1:sec353CC@sjc353.encs.concordia.ca/sjc353_1', echo=False)
+#engine = create_engine('mysql+pymysql://root@localhost/vaccine', echo=False)
 
 # fake data generator
 fake = Faker('en_CA')
@@ -16,10 +17,10 @@ Faker.seed(0)
 
 # Number of people to generate
 numPpl = 10
-numWorkers = 4
+numWorkers = 2
 
 # Number of facilities per city
-numFacilities = 2
+numFacilities = 1
 
 # Vaxx start and end dates
 vax_start = datetime.date(2021,1,1)
@@ -50,7 +51,7 @@ Vaccination_Facility = pandas.DataFrame(columns=['facility_name', 'facility_type
 
 for province in provinces:
     for city in provinces.get(province):
-        for _ in range(numFacilities):
+        for _ in range(5 if city == 'Montreal' else numFacilities):
             facility_type = random.choice(fac_types)    
             pc = fake.postalcode_in_province(province).replace(' ', '')
             street_name = fake.street_name()
@@ -94,6 +95,7 @@ for province in provinces:
     for city in provinces.get(province):
         # generate numPpl people per city in province 
         locations = Vaccination_Facility.loc[Vaccination_Facility['city'] == city]['facility_name'].tolist()
+        numF = len(locations)
         it = itertools.cycle(locations)
         for x in range(numPpl):
             # next location
@@ -115,7 +117,8 @@ for province in provinces:
             address = fake.street_address()
 
             # Create some healthcare workers
-            if x < numWorkers:
+            
+            if x < numWorkers * numF :
                 eid = fake.ssn().replace(' ', '')
                 while eid in HealthCare_Worker.SSN.values:
                     eid = fake.ssn().replace(' ','')
@@ -175,6 +178,21 @@ for index, row in Person.iterrows():
         dose_number = x+1
         date_of_vaccination = fake.date_between(vax_start, vax_end)
         Vaccination.loc[len(Vaccination)] = [row['SSN'], vax_location, vax_type, dose_number, date_of_vaccination, employee]
+
+# Shipments
+Shipment = pandas.DataFrame(columns=['type_name', 'number_of_vaccines','date_of_transfer', 'facility_name'])
+numShips = 4
+for province in provinces:
+    for city in provinces.get(province):
+        locations = Vaccination_Facility.loc[Vaccination_Facility['city'] == city]['facility_name'].tolist()
+        for location in locations:
+            for _ in range(numShips):
+                vax_type = random.choice(types)
+                num_vax = random.randint(500,2000)
+                date = fake.date_between(vax_start, vax_end)
+                Shipment.loc[len(Shipment)] = [vax_type, num_vax, date, location]
+
+
         
 # Clean up dataframes
 Person = Person.drop(columns=['city'])
@@ -191,5 +209,6 @@ Infection.to_sql('Infection', engine, if_exists='append',index=False, chunksize=
 HealthCare_Worker.to_sql('HealthCare_Worker', engine, if_exists='append',index=False, chunksize=500)
 Vaccine_Type.to_sql('Vaccine_Type', engine, if_exists='append',index=False, chunksize=500)
 Vaccination_Facility.to_sql('Vaccination_Facility', engine, if_exists='append',index=False, chunksize=500)
+Shipment.to_sql('Shipment', engine, if_exists='append',index=False, chunksize=500)
 Works_At.to_sql('Works_At', engine, if_exists='append',index=False, chunksize=500)
 Vaccination.to_sql('Vaccination', engine, if_exists='append', index=False, chunksize=500)
