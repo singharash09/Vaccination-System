@@ -21,7 +21,7 @@
                 <h4>People Vaccinated with 1 dose with ages 60+</h4>
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 150px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -86,7 +86,7 @@
                 <h4>People in Montreal with 2 doses of different types</h4>
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 100px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -146,7 +146,7 @@
                 <h4>Inventory By Province</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 300px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -186,7 +186,7 @@
                 <h4>Vaccines by received city in Quebec</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 300px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -227,7 +227,7 @@
                 <h4>Total vaccines used between January 1 & July 22</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -268,10 +268,10 @@
 
    <div class="row" style="margin:25px; margin-bottom:50px;">
          <div class="col-sm-12">
-                <h4>All workers working in a specific facility</h4>               
+                <h4>All workers working at Petersen Orchard Hospital</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -297,7 +297,7 @@
                                                 telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
                                                 WA.start_date, end_date
                                              from HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
-                                             where WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Williams View Clinic'
+                                             where WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Petersen Orchard Hospital' AND (end_date IS NULL OR end_date>'".date("Y-m-d")."')
                                              group by WA.facility_name, HCW.EID
                                              order by WA.facility_name asc, HCW.EID asc;";  
                                  $result = mysqli_query($conn, $query);
@@ -338,7 +338,7 @@
                 <h4>All workers in QC never vaccinated or vaccinated only once</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -361,6 +361,7 @@
                                           INNER JOIN Works_At as WA on P.SSN = WA.SSN
                                           INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
                                           INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
+                                          WHERE (end_date IS NULL OR end_date>'".date("Y-m-d")."')
                                           group by HCW.EID
                                           having COUNT(V.SSN)<=1
                                           order by HCW.EID asc;";  
@@ -393,7 +394,7 @@
                 <h4>Detailed Report Of Facilities In Montreal</h4>               
                <div class="card" >
                   <div class="card-body">
-                     <div style="height: 200px; overflow: scroll;">
+                     <div style="height: 350px; overflow: scroll;">
                         <table class="table table-striped">
                            <thead>
                               <tr>
@@ -417,7 +418,7 @@
                            <tbody>
                               <?php
                                  $query = "SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
-                                          (SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL AND facility_name = f.facility_name) AS `num_workers`,
+                                          (SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL OR end_date>'".date("Y-m-d")."') AND facility_name = f.facility_name) AS `num_workers`,
                                           COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
                                           (SELECT SUM(number_of_vaccines) FROM Shipment as s WHERE s.facility_name = f.facility_name) as `total_doses_received`,
                                           COUNT(DISTINCT tin.transfer_ID) as `num_trans_in`,

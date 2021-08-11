@@ -98,6 +98,9 @@ if(isset($_GET['insertion'])){
                                   ?>
                                 </select> 
                           </div> 
+                          <div class="col-sm-2">   
+                                
+                        </div>
                           <div>
                              <button class="btn btn-success" type="submit">Add Facility</button>
                           </div>
