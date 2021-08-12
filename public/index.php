@@ -45,7 +45,7 @@
                                  INNER JOIN Vaccination as V on P.SSN = V.SSN
                                  WHERE
                                  dose_number =1 AND
-                                 Email_address NOT IN(SELECT email_address FROM Person,Vaccination Where Person.SSN = Vaccination.SSN AND dose_number =2) AND
+                                 P.SSN NOT IN(SELECT Person.SSN FROM Person,Vaccination WHERE Person.SSN = Vaccination.SSN AND dose_number =2) AND
                                  (FLOOR(DATEDIFF(date_of_vaccination,date_of_birth)/365.25) >=60)
                                  GROUP BY P.SSN;";
 

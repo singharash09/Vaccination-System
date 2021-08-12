@@ -326,11 +326,11 @@ GROUP BY PC.province_code, I.type_name
 ORDER BY PC.province_code asc, I.number_of_vaccines desc;
 
 -- QUERY 16
-SELECT Postal_Code.province_code, Vaccine_Type.type_name, COUNT(DISTINCT Vaccination.SSN)
+SELECT Postal_Code.province_code, Vaccine_Type.type_name, COUNT(DISTINCT Vaccination.SSN) AS 'COUNT'
 FROM Postal_Code, Vaccine_Type, Vaccination, Vaccination_Facility
-WHERE Vaccination.date_of_vaccination>='2021-01-01' and Vaccination.date_of_vaccination<='2021-07-22'
-	and Vaccine_Type.type_name=Vaccination.type_name and Vaccination.facility_name=Vaccination_Facility.facility_name
-    and Vaccination_Facility.postal_code=Postal_Code.postal_code
+WHERE Vaccination.date_of_vaccination>='2021-01-01' AND Vaccination.date_of_vaccination<='2021-07-22'
+AND Vaccine_Type.type_name=Vaccination.type_name AND Vaccination.facility_name=Vaccination_Facility.facility_name
+AND Vaccination_Facility.postal_code=Postal_Code.postal_code
 GROUP BY Postal_Code.province_code, Vaccine_Type.type_name
 ORDER BY Postal_Code.province_code asc, Vaccine_Type.type_name asc;
 
@@ -382,8 +382,7 @@ LEFT JOIN Vaccination AS V on P.SSN = V.SSN
 INNER JOIN Works_At as WA on P.SSN = WA.SSN
 INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
 INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
-WHERE (end_date IS NULL or end_date >curdate()) AND PC.province_code ='QC'
+WHERE (end_date IS NULL OR end_date >curdate()) AND PC.province_code ='QC'
 GROUP BY HCW.EID
 HAVING COUNT(V.SSN)<=1
 ORDER BY HCW.EID asc;
-
