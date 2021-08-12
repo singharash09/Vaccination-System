@@ -418,7 +418,7 @@
                            <tbody>
                               <?php
                                  $query = "SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
-                                          (SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL OR end_date>'".date("Y-m-d")."') AND facility_name = f.facility_name) AS `num_workers`,
+                                          (SELECT COUNT(SSN) FROM Works_At WHERE (end_date IS NULL OR end_date>'".date("Y-m-d")."') AND facility_name = f.facility_name) AS `num_workers`,
                                           COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
                                           (SELECT SUM(number_of_vaccines) FROM Shipment as s WHERE s.facility_name = f.facility_name) as `total_doses_received`,
                                           COUNT(DISTINCT tin.transfer_ID) as `num_trans_in`,
@@ -438,6 +438,7 @@
                                           LEFT JOIN Transfers AS tout ON f.facility_name = tout.transfer_out
                                           WHERE p.city = 'Montreal'
                                           GROUP BY f.facility_name, i.type_name;";  
+
                                  $result = mysqli_query($conn, $query);
                                  $resultCheck = mysqli_num_rows($result);
                                  if($resultCheck>0){
