@@ -10,9 +10,8 @@ include_once '../../config/db.php';
 
     <body>
         <div class="container">
-            <div class="row">
-                <div class="col-sm-12" style="text-align: right;">
-                    <a href="addManager.php" type="button" class="btn btn-success button-style"><i class="fas fa-plus"></i> Add Manager</a>
+        <div class="row">
+                <h1 class="modify-page-title">Manager Details</h1>
             </div>
 
             <div class="row" style="margin-top: 20px;">
