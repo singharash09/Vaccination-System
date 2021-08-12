@@ -344,7 +344,7 @@ GROUP BY city;
 
 -- QUERY 18
 SELECT f.facility_name, f.address, f.facility_type, f.phone_number,
-(SELECT COUNT(SSN) FROM Works_At WHERE end_date IS NULL AND facility_name = f.facility_name) AS `num_workers`,
+(SELECT COUNT(SSN) FROM Works_At WHERE (end_date IS NULL or end_date >curdate()) AND facility_name = f.facility_name) AS `num_workers`,
 COUNT(DISTINCT s.shipment_ID) as `num_shipments`,
 (SELECT SUM(number_of_vaccines) FROM Shipment as s WHERE s.facility_name = f.facility_name) as `total_doses_received`,
 COUNT(DISTINCT tin.transfer_ID) as `num_trans_in`,
@@ -367,23 +367,23 @@ GROUP BY f.facility_name, i.type_name;
 
 -- QUERY 19
 SELECT WA.facility_name, HCW.EID, HCW.SSN, Person.first_name, last_name, date_of_birth, medicare, 
-	telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
-    WA.start_date, end_date
+telephone_number, address, PC.city, province_code, PC.postal_code, Person.citizenship, email_address, 
+WA.start_date, end_date
 FROM HealthCare_Worker HCW, Person, Postal_Code PC, Works_At WA
-WHERE WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Gonzalez Knolls Clinic'
+WHERE WA.SSN=HCW.SSN and HCW.SSN=Person.SSN and Person.postal_code=PC.postal_code and WA.facility_name = 'Petersen Orchard Hospital' AND (end_date IS NULL or end_date >curdate())
 GROUP BY WA.facility_name, HCW.EID
 ORDER BY WA.facility_name asc, HCW.EID asc;
 
 -- QUERY 20
 SELECT HCW.EID, P.first_name, P.last_name, P.date_of_birth, P.telephone_number, PC.city,
-	P.email_address, WA.facility_name
+P.email_address, WA.facility_name
 FROM Person P
 LEFT JOIN Vaccination AS V on P.SSN = V.SSN
 INNER JOIN Works_At as WA on P.SSN = WA.SSN
 INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
 INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
-WHERE PC.province_code ='QC'
+WHERE (end_date IS NULL or end_date >curdate()) AND PC.province_code ='QC'
 GROUP BY HCW.EID
-having COUNT(V.SSN)<=1
+HAVING COUNT(V.SSN)<=1
 ORDER BY HCW.EID asc;
 

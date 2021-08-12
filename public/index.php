@@ -361,7 +361,7 @@
                                           INNER JOIN Works_At as WA on P.SSN = WA.SSN
                                           INNER JOIN HealthCare_Worker AS HCW on HCW.SSN = WA.SSN
                                           INNER JOIN  Postal_Code AS PC on P.postal_code = PC.postal_code
-                                          WHERE (end_date IS NULL OR end_date>'".date("Y-m-d")."')
+                                          WHERE (end_date IS NULL OR end_date>'".date("Y-m-d")."') AND PC.province_code ='QC'
                                           group by HCW.EID
                                           having COUNT(V.SSN)<=1
                                           order by HCW.EID asc;";  
